@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace CarRental.Models.ViewModel
+namespace CarRental.Models.ViewModels
 {
     public class ApplicationUser : IdentityUser
     {

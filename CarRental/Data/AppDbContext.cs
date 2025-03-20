@@ -1,5 +1,5 @@
 ﻿using CarRental.Models;
-using CarRental.Models.ViewModel;
+using CarRental.Models.ViewModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;

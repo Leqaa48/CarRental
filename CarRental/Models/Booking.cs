@@ -1,5 +1,5 @@
 ﻿using CarRental.Models.CommonProp;
-using CarRental.Models.ViewModel;
+using CarRental.Models.ViewModels;
 
 namespace CarRental.Models
 {

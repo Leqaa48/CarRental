@@ -67,7 +67,7 @@ namespace CarRental.Migrations
 
                     b.HasIndex("CarID1");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("CarRental.Models.Car", b =>
@@ -85,9 +85,8 @@ namespace CarRental.Migrations
                     b.Property<decimal>("DailyRate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("FuelType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FuelType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Image")
                         .IsRequired()
@@ -107,16 +106,15 @@ namespace CarRental.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Transmission")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Transmission")
+                        .HasColumnType("int");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("CarID");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
                 });
 
             modelBuilder.Entity("CarRental.Models.Payment", b =>
@@ -159,10 +157,10 @@ namespace CarRental.Migrations
 
                     b.HasIndex("BookingID");
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payment", (string)null);
                 });
 
-            modelBuilder.Entity("CarRental.Models.ViewModel.ApplicationUser", b =>
+            modelBuilder.Entity("CarRental.Models.ViewModels.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -371,7 +369,7 @@ namespace CarRental.Migrations
 
             modelBuilder.Entity("CarRental.Models.Booking", b =>
                 {
-                    b.HasOne("CarRental.Models.ViewModel.ApplicationUser", "ApplicationUser")
+                    b.HasOne("CarRental.Models.ViewModels.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
@@ -386,7 +384,7 @@ namespace CarRental.Migrations
 
             modelBuilder.Entity("CarRental.Models.Payment", b =>
                 {
-                    b.HasOne("CarRental.Models.ViewModel.ApplicationUser", "ApplicationUser")
+                    b.HasOne("CarRental.Models.ViewModels.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
@@ -412,7 +410,7 @@ namespace CarRental.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("CarRental.Models.ViewModel.ApplicationUser", null)
+                    b.HasOne("CarRental.Models.ViewModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -421,7 +419,7 @@ namespace CarRental.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("CarRental.Models.ViewModel.ApplicationUser", null)
+                    b.HasOne("CarRental.Models.ViewModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -436,7 +434,7 @@ namespace CarRental.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CarRental.Models.ViewModel.ApplicationUser", null)
+                    b.HasOne("CarRental.Models.ViewModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -445,7 +443,7 @@ namespace CarRental.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("CarRental.Models.ViewModel.ApplicationUser", null)
+                    b.HasOne("CarRental.Models.ViewModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
