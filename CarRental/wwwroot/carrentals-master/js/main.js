@@ -237,17 +237,17 @@ jQuery(document).ready(function($) {
 	};
 	// siteCountDown();
 
-	var siteDatePicker = function() {
-
-		if ( $('.datepicker').length > 0 ) {
-			$('.datepicker').datepicker();
+	var siteDatePicker = function () {
+		if ($('.datepicker').length > 0) {
+			$('.datepicker').datepicker({
+				minDate: 0 // Disables dates before today
+			});
 		}
-
 	};
 	siteDatePicker();
 
-	var siteSticky = function() {
-		$(".js-sticky-header").sticky({topSpacing:0});
+	var siteSticky = function () {
+		$(".js-sticky-header").sticky({ topSpacing: 0 });
 	};
 	siteSticky();
 
