@@ -1,3 +1,9 @@
+using CarRental.Data;
+using CarRental.Models.ViewModel;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System;
+
 namespace CarRental
 {
     public class Program
@@ -8,6 +14,16 @@ namespace CarRental
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("CarRental"));
+            });
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+            builder.Services.AddScoped<UserManager<ApplicationUser>>();
+            builder.Services.AddScoped<RoleManager<IdentityRole>>();
 
             var app = builder.Build();
 
