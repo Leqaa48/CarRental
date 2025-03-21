@@ -45,22 +45,26 @@ namespace CarRental.Areas.Dashboard.Controllers
             return View(car);
         }
 
-        // GET: Dashboard/Cars/Create
-        public IActionResult Create()
+        private void PopulateCarDropdowns()
         {
             ViewBag.StatusList = Enum.GetValues(typeof(CarStatus))
-                             .Cast<CarStatus>()
-                             .Select(s => new SelectListItem { Value = s.ToString(), Text = s.ToString() })
-                             .ToList();
+                                     .Cast<CarStatus>()
+                                     .Select(s => new SelectListItem { Value = s.ToString(), Text = s.ToString() })
+                                     .ToList();
             ViewBag.FuelTypeList = Enum.GetValues(typeof(FuelTypeS))
-                               .Cast<FuelTypeS>()
-                               .Select(f => new SelectListItem { Value = f.ToString(), Text = f.ToString() })
-                               .ToList();
+                                       .Cast<FuelTypeS>()
+                                       .Select(f => new SelectListItem { Value = f.ToString(), Text = f.ToString() })
+                                       .ToList();
 
             ViewBag.TransmissionList = Enum.GetValues(typeof(TransmissionS))
                                            .Cast<TransmissionS>()
                                            .Select(t => new SelectListItem { Value = t.ToString(), Text = t.ToString() })
                                            .ToList();
+        }
+
+        public IActionResult Create()
+        {
+            PopulateCarDropdowns();
             return View();
         }
 
@@ -72,42 +76,56 @@ namespace CarRental.Areas.Dashboard.Controllers
             {
                 if (car.ImageFile != null && car.ImageFile.Length > 0)
                 {
-                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                    if (!Directory.Exists(uploadsFolder))
+                    try
                     {
-                        Directory.CreateDirectory(uploadsFolder);
+
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/carrentals-master/images");
+
+
+                        var fileName = Path.GetFileName(car.ImageFile.FileName);
+
+
+                        var filePath = Path.Combine(uploadsFolder, fileName);
+
+
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await car.ImageFile.CopyToAsync(fileStream);
+                        }
+
+
+                        car.Image = $"/carrentals-master/images/{fileName}";
+
+
+                        _context.Add(car);
+                        await _context.SaveChangesAsync();
+
+
+                        return Redirect("/Dashboard/Cars/Index"); ; 
                     }
-
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(car.ImageFile.FileName);
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    catch (Exception)
                     {
-                        await car.ImageFile.CopyToAsync(fileStream);
-                    }
 
-                    car.Image = $"/images/{uniqueFileName}";
+                        ModelState.AddModelError(string.Empty, "An error occurred while uploading the file.");
+                    }
                 }
+                else
+                {
 
-                _context.Add(car);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    ModelState.AddModelError("File", "Please upload a valid image file.");
+                }
             }
-            ViewBag.StatusList = Enum.GetValues(typeof(CarStatus))
-                            .Cast<CarStatus>()
-                            .Select(s => new SelectListItem { Value = s.ToString(), Text = s.ToString() })
-                            .ToList();
-            ViewBag.FuelTypeList = Enum.GetValues(typeof(FuelTypeS))
-                               .Cast<FuelTypeS>()
-                               .Select(f => new SelectListItem { Value = f.ToString(), Text = f.ToString() })
-                               .ToList();
 
-            ViewBag.TransmissionList = Enum.GetValues(typeof(TransmissionS))
-                                           .Cast<TransmissionS>()
-                                           .Select(t => new SelectListItem { Value = t.ToString(), Text = t.ToString() })
-                                           .ToList();
+        PopulateCarDropdowns();
             return View(car);
         }
+
 
         // GET: Dashboard/Cars/Edit/5
         public async Task<IActionResult> Edit(string id)

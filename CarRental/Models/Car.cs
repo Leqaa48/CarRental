@@ -38,7 +38,7 @@ namespace CarRental.Models
         [StringLength(20, ErrorMessage = "Status cannot exceed 20 characters.")]
         public string Status { get; set; }
 
-        public string Image { get; set; }
+        public string? Image { get; set; }
 
         [NotMapped]
         public IFormFile? ImageFile { get; set; }

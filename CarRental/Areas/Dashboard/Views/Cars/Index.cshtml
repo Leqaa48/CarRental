@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a href="/Dashboard/Cars/Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -75,9 +75,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
+                <td>
+                    <img src="@item.Image" alt="Car Image" style="width: 100px; height: auto;">
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsDeleted)
             </td>

@@ -1,255 +1,79 @@
-﻿
+﻿@model IEnumerable<Car>
 @{
     ViewData["Title"] = "CarList";
 }
 
 <div class="hero inner-page" style="background-image: url('/carrentals-master/images/hero_1_a.jpg');">
-
     <div class="container">
-        <div class="row align-items-end ">
+        <div class="row align-items-end">
             <div class="col-lg-5">
-
                 <div class="intro">
                     <h1><strong>Available Cars</strong></h1>
-                    <div class="custom-breadcrumbs"><a href="index.html">Home</a> <span class="mx-2">/</span> <strong>Available Cars</strong></div>
+                    <div class="custom-breadcrumbs">
+                        <a href="index.html">Home</a> <span class="mx-2">/</span> <strong>Available Cars</strong>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-
 
 <div class="site-section bg-light">
     <div class="container">
-       
         <div class="row">
-            <div class="col-md-6 col-lg-4 mb-4">
-
-                <div class="listing d-block  align-items-stretch">
-                    <div class="listing-img h-100 mr-4">
-                        <img src="/carrentals-master/images/car_6.jpg" alt="Image" class="img-fluid">
-                    </div>
-                    <div class="listing-contents h-100">
-                        <h3>Mitsubishi Pajero</h3>
-                        <div class="rent-price">
-                            <strong>$389.00</strong><span class="mx-1">/</span>day
+            @foreach (var car in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card car-card">
+                        <div class="car-img-container">
+                            <img src="@car.Image" alt="Car Image" class="car-image">
                         </div>
-                        <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-                            <div class="listing-feature pr-4">
-                                <span class="caption">FuelType:</span>
-                                <span class="number">Petrol</span>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@car.Brand @car.Model</h5>
+                            <p class="rent-price"><strong>@car.DailyRate.ToString("C")</strong> / day</p>
+                            <div class="features">
+                                <span><strong>Fuel:</strong> @car.FuelType</span>
+                                <span><strong>Transmission:</strong> @car.Transmission</span>
+                                <span><strong>Seats:</strong> @car.Seats</span>
                             </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Transmission:</span>
-                                <span class="number">Automatic</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Passenger:</span>
-                                <span class="number">5</span>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Car name</p>
-                            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
+                            <p class="status">@car.Status</p>
+                            <a href="#" class="btn btn-primary btn-sm mt-auto">Rent Now</a>
                         </div>
                     </div>
-
                 </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 mb-4">
-
-                <div class="listing d-block  align-items-stretch">
-                    <div class="listing-img h-100 mr-4">
-                        <img src="/carrentals-master/images/car_5.jpg" alt="Image" class="img-fluid">
-                    </div>
-                    <div class="listing-contents h-100">
-                        <h3>Nissan Moco</h3>
-                        <div class="rent-price">
-                            <strong>$389.00</strong><span class="mx-1">/</span>day
-                        </div>
-                        <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Luggage:</span>
-                                <span class="number">8</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Doors:</span>
-                                <span class="number">4</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Passenger:</span>
-                                <span class="number">4</span>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-                            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-
-            <div class="col-md-6 col-lg-4 mb-4">
-
-                <div class="listing d-block  align-items-stretch">
-                    <div class="listing-img h-100 mr-4">
-                        <img src="/carrentals-master/images/car_4.jpg" alt="Image" class="img-fluid">
-                    </div>
-                    <div class="listing-contents h-100">
-                        <h3>Honda Fitta</h3>
-                        <div class="rent-price">
-                            <strong>$389.00</strong><span class="mx-1">/</span>day
-                        </div>
-                        <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Luggage:</span>
-                                <span class="number">8</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Doors:</span>
-                                <span class="number">4</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Passenger:</span>
-                                <span class="number">4</span>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-                            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 mb-4">
-
-                <div class="listing d-block  align-items-stretch">
-                    <div class="listing-img h-100 mr-4">
-                        <img src="/carrentals-master/images/car_3.jpg" alt="Image" class="img-fluid">
-                    </div>
-                    <div class="listing-contents h-100">
-                        <h3>Skoda Laura</h3>
-                        <div class="rent-price">
-                            <strong>$389.00</strong><span class="mx-1">/</span>day
-                        </div>
-                        <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Luggage:</span>
-                                <span class="number">8</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Doors:</span>
-                                <span class="number">4</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Passenger:</span>
-                                <span class="number">4</span>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-                            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 mb-4">
-
-                <div class="listing d-block  align-items-stretch">
-                    <div class="listing-img h-100 mr-4">
-                        <img src="/carrentals-master/images/car_2.jpg" alt="Image" class="img-fluid">
-                    </div>
-                    <div class="listing-contents h-100">
-                        <h3>Mazda LaPuta</h3>
-                        <div class="rent-price">
-                            <strong>$389.00</strong><span class="mx-1">/</span>day
-                        </div>
-                        <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Luggage:</span>
-                                <span class="number">8</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Doors:</span>
-                                <span class="number">4</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Passenger:</span>
-                                <span class="number">4</span>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-                            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-
-            <div class="col-md-6 col-lg-4 mb-4">
-
-                <div class="listing d-block  align-items-stretch">
-                    <div class="listing-img h-100 mr-4">
-                        <img src="/carrentals-master/images/car_1.jpg" alt="Image" class="img-fluid">
-                    </div>
-                    <div class="listing-contents h-100">
-                        <h3>Buick LaCrosse</h3>
-                        <div class="rent-price">
-                            <strong>$389.00</strong><span class="mx-1">/</span>day
-                        </div>
-                        <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Luggage:</span>
-                                <span class="number">8</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Doors:</span>
-                                <span class="number">4</span>
-                            </div>
-                            <div class="listing-feature pr-4">
-                                <span class="caption">Passenger:</span>
-                                <span class="number">4</span>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-                            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
+            }
         </div>
+
+        <!-- Pagination -->
         <div class="row">
-            <div class="col-5">
+            <div class="col-12">
                 <div class="custom-pagination">
-                    <a href="#">1</a>
-                    <span>2</span>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <a href="@Url.Action("CarList", new { page = ViewBag.CurrentPage - 1 })">«</a>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        if (i == ViewBag.CurrentPage)
+                        {
+                            <span class="active">@i</span>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("CarList", new { page = i })">@i</a>
+                        }
+                    }
+
+                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    {
+                        <a href="@Url.Action("CarList", new { page = ViewBag.CurrentPage + 1 })">»</a>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 
 
 <div class="site-section bg-primary py-5">
