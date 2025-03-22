@@ -1,0 +1,137 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<section class="site-section contact-area section--padding position-relative" style="margin-bottom:0px; margin-top:30px">
+    <span class="ring-shape ring-shape-1"></span>
+    <span class="ring-shape ring-shape-2"></span>
+    <span class="ring-shape ring-shape-3"></span>
+    <span class="ring-shape ring-shape-4"></span>
+    <span class="ring-shape ring-shape-5"></span>
+    <span class="ring-shape ring-shape-6"></span>
+    <span class="ring-shape ring-shape-7"></span>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 mx-auto">
+                <div class="card card-item">
+                    <div class="card-body">
+                        <h3 class="card-title text-center fs-24 lh-35 pb-4">Create an Account <br/>
+                        </h3>
+                        <div class="section-block"></div>
+                        <form asp-action="Register" asp-controller="Account" method="post" class="pt-4">
+                            <div class="input-box">
+                                <label asp-for="FirstName" class="label-text"></label>
+                                <div class="form-group">
+                                    <input class="form-control form--control"
+                                           asp-for="FirstName"
+                                           placeholder="First Name" />
+                                    <span class="la la-user input-icon"></span>
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label asp-for="LastName" class="label-text"></label>
+                                <div class="form-group">
+                                    <input class="form-control form--control"
+                                           asp-for="LastName"
+                                           placeholder="Last Name" />
+                                    <span class="la la-user input-icon"></span>
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label asp-for="Email" class="label-text"></label>
+                                <div class="form-group">
+                                    <input class="form-control form--control"
+                                           asp-for="Email"
+                                           placeholder="Email Address" />
+                                    <span class="la la-user input-icon"></span>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label asp-for="PhoneNumber" class="label-text"></label>
+                                <div class="form-group d-flex">
+                                    <select class="form-control form--control w-25 me-2" id="CountryCode">
+                                        <!-- Common Countries -->
+                                        <option value="+1">+1 (USA)</option>
+                                        <option value="+44">+44 (UK)</option>
+                                        <option value="+91">+91 (India)</option>
+                                        <option value="+33">+33 (France)</option>
+                                        <option value="+49">+49 (Germany)</option>
+
+                                        <!-- Arab Countries -->
+                                        <option value="+20">+20 (Egypt)</option>
+                                        <option value="+212">+212 (Morocco)</option>
+                                        <option value="+213">+213 (Algeria)</option>
+                                        <option value="+216">+216 (Tunisia)</option>
+                                        <option value="+218">+218 (Libya)</option>
+                                        <option value="+971">+971 (UAE)</option>
+                                        <option value="+973">+973 (Bahrain)</option>
+                                        <option value="+974">+974 (Qatar)</option>
+                                        <option value="+965">+965 (Kuwait)</option>
+                                        <option value="+966">+966 (Saudi Arabia)</option>
+                                        <option value="+968">+968 (Oman)</option>
+                                        <option value="+970">+970 (Palestine)</option>
+                                        <option value="+962" selected>+962 (Jordan)</option>
+                                        <option value="+964">+964 (Iraq)</option>
+                                        <option value="+967">+967 (Yemen)</option>
+                                        <option value="+963">+963 (Syria)</option>
+                                        <option value="+252">+252 (Somalia)</option>
+                                        <option value="+222">+222 (Mauritania)</option>
+                                        <option value="+269">+269 (Comoros)</option>
+
+                                        <!-- More Countries -->
+                                        <option value="+90">+90 (Turkey)</option>
+                                        <option value="+86">+86 (China)</option>
+                                        <option value="+81">+81 (Japan)</option>
+                                        <option value="+82">+82 (South Korea)</option>
+                                    </select>
+                                    <input class="form-control form--control w-75"
+                                           asp-for="PhoneNumber"
+                                           placeholder="Phone Number"
+                                           id="PhoneNumber"
+                                           maxlength="14"
+                                           oninput="formatPhoneNumber(event)" />
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label asp-for="Password" class="label-text"></label>
+                                <div class="input-group mb-3">
+                                    <span class="la la-lock input-icon z-index-6"></span>
+                                    <input class="form-control form--control top-bottom-left-radius-5 password-field"
+                                           asp-for="Password"
+                                           placeholder="Password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label asp-for="ConfirmPassword" class="label-text"></label>
+                                <div class="input-group mb-3">
+                                    <span class="la la-lock input-icon z-index-6"></span>
+                                    <input class="form-control form--control top-bottom-left-radius-5 password-field"
+                                           asp-for="ConfirmPassword"
+                                           placeholder="Confirm Password" />
+                                    <div asp-validation-for="ConfirmPassword" class="text-danger"></div>
+                                </div>
+                            </div>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <button class="btn btn-primary btn-sm mt-auto" type="submit">
+                                Register Account
+                                <i class="la la-arrow-right icon ms-1"></i>
+                            </button>
+                            <p class="fs-14 pt-2">
+                                Already have an account?
+                                <a asp-action="Login" asp-controller="Account" class="text-color hover-underline">Log in</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
