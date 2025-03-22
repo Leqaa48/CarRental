@@ -1,95 +1,46 @@
 ﻿@model IEnumerable<CarRental.Models.Car>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Car Rentals";
 }
 
-<h1>Index</h1>
+<h1 class="text-center mb-4">Car Rentals</h1>
 
-<p>
-    <a href="/Dashboard/Cars/Create">Create New</a>
+<p class="text-end mb-3">
+    <a href="/Dashboard/Cars/Create" class="btn btn-primary">Create New Car</a>
 </p>
-<table class="table">
-    <thead>
+
+<table class="table table-striped table-bordered table-hover">
+    <thead class="thead-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Brand)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Model)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Year)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FuelType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Transmission)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Seats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DailyRate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Brand)</th>
+            <th>@Html.DisplayNameFor(model => model.Model)</th>
+            <th>@Html.DisplayNameFor(model => model.Year)</th>
+            <th>@Html.DisplayNameFor(model => model.DailyRate)</th>
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
+            <th>@Html.DisplayNameFor(model => model.Image)</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FuelType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Transmission)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seats)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DailyRate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Brand)</td>
+                <td>@Html.DisplayFor(modelItem => item.Model)</td>
+                <td>@Html.DisplayFor(modelItem => item.Year)</td>
+                <td>@Html.DisplayFor(modelItem => item.DailyRate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Status)</td>
                 <td>
-                    <img src="@item.Image" alt="Car Image" style="width: 100px; height: auto;">
+                    <img src="@item.Image" alt="Car Image" class="img-fluid" style="max-width: 100px; height: auto;">
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CarID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CarID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CarID">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    <a href="@Url.Action("Edit", "Cars", new { id = item.CarID })" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="@Url.Action("Details", "Cars", new { id = item.CarID })" class="btn btn-info btn-sm">Details</a>
+                    <a href="@Url.Action("Delete", "Cars", new { id = item.CarID })" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
