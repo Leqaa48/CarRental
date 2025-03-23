@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="~/carrentals-master/fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" href="~/carrentals-master/css/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    
    
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="~/carrentals-master/css/style.css">
@@ -163,6 +164,19 @@
     <script src="~/carrentals-master/js/aos.js"></script>
     
     <script src="~/carrentals-master/js/main.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".datepicker").datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: 0 
+            });
+        });
+    </script>
+    }
 
 </body>
 

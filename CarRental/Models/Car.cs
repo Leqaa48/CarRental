@@ -38,6 +38,9 @@ namespace CarRental.Models
         [StringLength(20, ErrorMessage = "Status cannot exceed 20 characters.")]
         public string Status { get; set; }
 
+        public DateTime AvailableFrom { get; set; }
+        public DateTime AvailableTo { get; set; }
+
         public string? Image { get; set; }
 
         [NotMapped]

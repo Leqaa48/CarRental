@@ -66,7 +66,15 @@
                 <span id="file-name" class="ml-2 text-muted"></span>
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
-            
+            <div class="form-group">
+                <label for="AvailableFrom">Available From:</label>
+                <input type="datetime-local" name="AvailableFrom" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="AvailableTo">Available To:</label>
+                <input type="datetime-local" name="AvailableTo" class="form-control" required />
+            </div>
             <div class="form-group">
                 <label asp-for="CreatedAt" class="control-label"></label>
                 <input asp-for="CreatedAt" class="form-control" />
