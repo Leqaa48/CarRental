@@ -21,23 +21,40 @@ namespace CarRental.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> CarList(int page = 1, int pageSize = 6)
+        public async Task<IActionResult> CarList(DateTime? startDate, DateTime? endDate, int page = 1, int pageSize = 6)
         {
-            var cars = await _context.Cars.ToListAsync();
+            
+            var query = _context.Cars.Where(c => c.Status == "Available");
 
-            int totalCars = cars.Count;
+           
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                query = query.Where(c =>
+                    (c.AvailableFrom <= startDate.Value && c.AvailableTo >= endDate.Value)
+                    || (c.AvailableFrom >= startDate.Value && c.AvailableFrom <= endDate.Value)
+                    || (c.AvailableTo >= startDate.Value && c.AvailableTo <= endDate.Value)
+                );
+            }
+
+            int totalCars = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(totalCars / (double)pageSize);
 
-            var paginatedCars = cars
+            var paginatedCars = await query
+                .OrderBy(c => c.Brand) 
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
 
+            
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-ddTHH:mm");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-ddTHH:mm");
+
             return View(paginatedCars);
         }
+
 
 
 

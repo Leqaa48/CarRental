@@ -29,15 +29,24 @@
                             <img src="@car.Image" alt="Car Image" class="car-image">
                         </div>
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">@car.Brand @car.Model</h5>
-                            <p class="rent-price"><strong>@car.DailyRate.ToString("C")</strong> / day</p>
+                            <h5 class="card-title">@car.Brand @car.Model (@car.Year)</h5>
+                            <p class="rent-price">
+                                <strong>@car.DailyRate.ToString("C")</strong> / day
+                            </p>
                             <div class="features">
                                 <span><strong>Fuel:</strong> @car.FuelType</span>
                                 <span><strong>Transmission:</strong> @car.Transmission</span>
                                 <span><strong>Seats:</strong> @car.Seats</span>
                             </div>
-                            <p class="status">@car.Status</p>
-                            <a href="#" class="btn btn-primary btn-sm mt-auto">Rent Now</a>
+                            <p class="status @(car.Status == "Available" ? "text-success" : "text-danger")">
+                                Status: @car.Status
+                            </p>
+
+                            
+                            <a href="@Url.Action("RentCar", new { carId = car.CarID, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })"
+                               class="btn btn-primary btn-sm mt-auto @(car.Status == "Available" ? "" : "disabled")">
+                                Rent Now
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -50,7 +59,7 @@
                 <div class="custom-pagination">
                     @if (ViewBag.CurrentPage > 1)
                     {
-                        <a href="@Url.Action("CarList", new { page = ViewBag.CurrentPage - 1 })">«</a>
+                        <a href="@Url.Action("CarList", new { page = ViewBag.CurrentPage - 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })">«</a>
                     }
 
                     @for (int i = 1; i <= ViewBag.TotalPages; i++)
@@ -61,19 +70,20 @@
                         }
                         else
                         {
-                            <a href="@Url.Action("CarList", new { page = i })">@i</a>
+                            <a href="@Url.Action("CarList", new { page = i, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })">@i</a>
                         }
                     }
 
                     @if (ViewBag.CurrentPage < ViewBag.TotalPages)
                     {
-                        <a href="@Url.Action("CarList", new { page = ViewBag.CurrentPage + 1 })">»</a>
+                        <a href="@Url.Action("CarList", new { page = ViewBag.CurrentPage + 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })">»</a>
                     }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <div class="site-section bg-primary py-5">
