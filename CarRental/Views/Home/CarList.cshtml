@@ -32,6 +32,9 @@
                             <h5 class="card-title">@car.Brand @car.Model (@car.Year)</h5>
                             <p class="rent-price">
                                 <strong>@car.DailyRate.ToString("C")</strong> / day
+
+
+
                             </p>
                             <div class="features">
                                 <span><strong>Fuel:</strong> @car.FuelType</span>
@@ -39,7 +42,7 @@
                                 <span><strong>Seats:</strong> @car.Seats</span>
                             </div>
                             <p class="status @(car.Status == "Available" ? "text-success" : "text-danger")">
-                                Status: @car.Status
+                                 @car.Status
                             </p>
 
                             
