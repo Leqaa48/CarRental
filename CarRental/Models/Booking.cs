@@ -5,6 +5,13 @@ namespace CarRental.Models
 {
     public class Booking : SharedProp
     {
+        public string FirstName { get; set; }
+        public string SecondName { get; set; }
+        public string ThirdName { get; set; }
+        public string ForthName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string PaymentMethod { get; set; }
         public int BookingID { get; set; }
         public int UserID { get; set; }
         public ApplicationUser? ApplicationUser { get; set; }
@@ -25,3 +32,5 @@ namespace CarRental.Models
 
     }
 }
+
+
