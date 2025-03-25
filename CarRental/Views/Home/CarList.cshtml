@@ -3,6 +3,7 @@
     ViewData["Title"] = "CarList";
 }
 
+<!-- Hero Section -->
 <div class="hero inner-page" style="background-image: url('/carrentals-master/images/hero_1_a.jpg');">
     <div class="container">
         <div class="row align-items-end">
@@ -10,7 +11,7 @@
                 <div class="intro">
                     <h1><strong>Available Cars</strong></h1>
                     <div class="custom-breadcrumbs">
-                        <a href="index.html">Home</a> <span class="mx-2">/</span> <strong>Available Cars</strong>
+                        <a asp-action="Index" asp-controller="Home">Home</a> <span class="mx-2">/</span> <strong>Available Cars</strong>
                     </div>
                 </div>
             </div>
@@ -18,7 +19,8 @@
     </div>
 </div>
 
-<div class="cc">
+<!-- Car List Section -->
+<div class="cc" style="margin-top: 30px;">
     <div class="container">
         <div class="row">
             @foreach (var car in Model)
@@ -32,22 +34,19 @@
                             <h5 class="card-title">@car.Brand @car.Model (@car.Year)</h5>
                             <p class="rent-price">
                                 <strong>@car.DailyRate.ToString("C")</strong> / day
-
-
-
                             </p>
                             <div class="features">
                                 <span><strong>Fuel:</strong> @car.FuelType</span>
                                 <span><strong>Transmission:</strong> @car.Transmission</span>
                                 <span><strong>Seats:</strong> @car.Seats</span>
                             </div>
-                            <p class="status @(car.Status == "Available" ? "text-success" : "text-danger")">
+                            <p class="status">
                                  @car.Status
                             </p>
 
-                            
-                            <a href="@Url.Action("RentCar", new { carId = car.CarID, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })"
-                               class="btn btn-primary btn-sm mt-auto @(car.Status == "Available" ? "" : "disabled")">
+                            <!-- Rent Now Button -->
+                            <a href="@Url.Action("RentCar", "Booking" , new { carId = car.CarID, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })"
+                               class="btn btn-primary btn-sm mt-auto">
                                 Rent Now
                             </a>
                         </div>
@@ -86,8 +85,6 @@
         </div>
     </div>
 </div>
-
-
 
 <div class="site-section bg-primary py-5">
     <div class="container">
