@@ -15,13 +15,13 @@ namespace CarRental.Controllers
             
             _context = context;
         }
-        public IActionResult RentCar(int carId, DateTime? startDate, DateTime? endDate)
+        public IActionResult RentCar(string carId, DateTime? startDate, DateTime? endDate)
         {
             var car = _context.Cars.FirstOrDefault(c => c.CarID == carId.ToString());
 
             if (car != null && startDate.HasValue && endDate.HasValue)
             {
-                var isCarBooked = _context.Bookings.Any(b => b.CarID == carId.ToString() &&
+                var isCarBooked = _context.Bookings.Any(b => b.CarID == carId &&
                                                              ((b.StartDate < endDate && b.EndDate > startDate)));
 
                 if (isCarBooked)
@@ -50,8 +50,71 @@ namespace CarRental.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        public IActionResult ConfirmRental(string carID, DateTime startDate, DateTime endDate, string firstName, string secondName, string thirdName, string forthName, string email, string phoneNumber)
+        {
+            // Get the car details from the database using the passed carID
+            var car = _context.Cars.FirstOrDefault(c => c.CarID == carID);
+
+            if (car == null)
+            {
+                // Handle the case where the car ID doesn't exist (e.g., redirect to error page or show an error message)
+                TempData["ErrorMessage"] = "Car not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Calculate the total price based on the time difference
+            var hourlyRate = car.DailyRate;
+
+            var hoursDiff = (endDate - startDate).TotalHours;
+            var totalPrice = hourlyRate * (decimal)hoursDiff;
+
+            // Create a booking object
+            var booking = new Booking
+            {
+                CarID = carID,
+                Car = car,
+                StartDate = startDate,
+                EndDate = endDate,
+                TotalPrice = totalPrice,
+                FirstName = firstName,
+                SecondName = secondName,
+                ThirdName = thirdName,
+                ForthName = forthName,
+                Email = email,
+                PhoneNumber = phoneNumber,
+                Status = BookingStatus.Pending.ToString()
+            };
+
+            // Display the confirmation page with booking details
+            return View("ConfirmRental", booking);
+        }
 
 
+        [HttpPost]
+        public IActionResult ConfirmBooking(Booking booking)
+        {
+            if (ModelState.IsValid)
+            {
+                // Set initial status if it's not set
+                if (string.IsNullOrEmpty(booking.Status))
+                {
+                    booking.Status = BookingStatus.Pending.ToString();
+                }
 
+                // Save to database (assuming you have a DbContext)
+                _context.Bookings.Add(booking);
+                _context.SaveChanges();
+
+                return RedirectToAction("BookingSuccess"); // Redirect to a success page
+            }
+
+            return View("BookingConfirmation", booking); // Re-render if validation fails
+        }
+
+        public IActionResult BookingSuccess()
+        {
+            return View();
+        }
     }
 }

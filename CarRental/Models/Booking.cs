@@ -11,16 +11,14 @@ namespace CarRental.Models
         public string ForthName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string PaymentMethod { get; set; }
+        //public string PaymentMethod { get; set; }
         public int BookingID { get; set; }
-        public int UserID { get; set; }
-        public ApplicationUser? ApplicationUser { get; set; }
         public string CarID { get; set; }
         public Car? Car { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal TotalPrice { get; set; }
-        public string Status { get; set; } 
+        public string? Status { get; set; } = BookingStatus.Pending.ToString();
 
     }
     public enum BookingStatus
