@@ -1,91 +1,116 @@
 ﻿@model CarRental.Models.Booking
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Booking";
 }
 
-<h1>Edit</h1>
+<main class="main__content_wrapper">
+    <div class="dashboard__container add__property--container">
+        <div class="add__property--heading mb-30 text-center">
+            <h2 class="add__property--heading__title">Edit Booking</h2>
+        </div>
+        <div class="add__property__inner d-flex justify-content-center">
+            <div class="add__property--box mb-30 w-50">
+                <h3 class="add__property--box__title mb-20">Booking Details</h3>
+                <form class="add__property--form" asp-action="Edit">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="hidden" asp-for="BookingID" />
+                        </div>
 
-<h4>Booking</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="FirstName">First Name</label>
+                                <input class="add__listing--input__field" id="FirstName" name="FirstName" asp-for="FirstName" type="text" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="SecondName">Second Name</label>
+                                <input class="add__listing--input__field" id="SecondName" name="SecondName" asp-for="SecondName" type="text" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="ThirdName">Third Name</label>
+                                <input class="add__listing--input__field" id="ThirdName" name="ThirdName" asp-for="ThirdName" type="text" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="ForthName">Forth Name</label>
+                                <input class="add__listing--input__field" id="LastName" name="LastName" asp-for="LastName" type="text" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="Email">Email</label>
+                                <input class="add__listing--input__field" id="Email" name="Email" asp-for="Email" type="email" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="PhoneNumber">Phone Number</label>
+                                <input class="add__listing--input__field" id="PhoneNumber" name="PhoneNumber" asp-for="PhoneNumber" type="text" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="CarID">Car</label>
+                                <select class="add__listing--form__select" id="CarID" name="CarID" asp-for="CarID" asp-items="ViewBag.CarID"></select>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="StartDate">Start Date</label>
+                                <input class="add__listing--input__field" id="StartDate" name="StartDate" asp-for="StartDate" type="date" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="EndDate">End Date</label>
+                                <input class="add__listing--input__field" id="EndDate" name="EndDate" asp-for="EndDate" type="date" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="TotalPrice">Total Price</label>
+                                <input class="add__listing--input__field" id="TotalPrice" name="TotalPrice" asp-for="TotalPrice" type="number" step="0.01" min="0" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="Status">Status</label>
+                                <select class="add__listing--form__select" id="Status" name="Status" asp-items="@ViewBag.BookingStatus"></select>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label" for="CreatedAt" >Created At</label>
+                                <input class="add__listing--input__field" id="CreatedAt" name="CreatedAt" asp-for="CreatedAt" type="date" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center">
+                            <button class="solid__btn add__property--btn" type="submit">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="SecondName" class="control-label"></label>
-                <input asp-for="SecondName" class="form-control" />
-                <span asp-validation-for="SecondName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ThirdName" class="control-label"></label>
-                <input asp-for="ThirdName" class="form-control" />
-                <span asp-validation-for="ThirdName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ForthName" class="control-label"></label>
-                <input asp-for="ForthName" class="form-control" />
-                <span asp-validation-for="ForthName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="BookingID" />
-            <div class="form-group">
-                <label asp-for="CarID" class="control-label"></label>
-                <select asp-for="CarID" class="form-control" asp-items="ViewBag.CarID"></select>
-                <span asp-validation-for="CarID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalPrice" class="control-label"></label>
-                <input asp-for="TotalPrice" class="form-control" />
-                <span asp-validation-for="TotalPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsDeleted" class="control-label"></label>
-                <input asp-for="IsDeleted" class="form-control" />
-                <span asp-validation-for="IsDeleted" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+        <div class="text-center mt-3">
+            <a href="/Dashboard/Bookings/Index">Back to List</a>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+</main>

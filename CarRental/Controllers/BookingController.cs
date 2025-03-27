@@ -80,7 +80,7 @@ namespace CarRental.Controllers
                 FirstName = firstName,
                 SecondName = secondName,
                 ThirdName = thirdName,
-                ForthName = forthName,
+                LastName = forthName,
                 Email = email,
                 PhoneNumber = phoneNumber,
                 Status = BookingStatus.Pending.ToString()

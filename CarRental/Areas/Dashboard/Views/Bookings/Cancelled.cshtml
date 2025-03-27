@@ -1,14 +1,15 @@
-﻿@model IEnumerable<CarRental.Models.Car>
+﻿@model IEnumerable<CarRental.Models.Booking>
 
 @{
-    ViewData["Title"] = "Car Rentals";
+    ViewData["Title"] = "Cancelled";
 }
 <main class="main__content_wrapper">
     <!-- dashboard container -->
     <div class="dashboard__container dashboard__reviews--container">
         <div class="reviews__heading mb-30">
-            <h2 class="reviews__heading--title">All Cars </h2>
+            <h2 class="reviews__heading--title">Cancelled Bookings</h2>
         </div>
+        @if (Model != null && Model.Any()) {
         <div class="properties__wrapper">
             <div class="properties__table table-responsive">
                 <table class="properties__table--wrapper">
@@ -21,61 +22,56 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var car in Model)
-                        {
-                            <tr>
-                                <td>
-                                    <div class="properties__author d-flex align-items-center">
-                                        <div class="properties__author--thumb">
-                                            <img src="@car.Image" alt="img" style=" width: 150px;" />
+                            @foreach (var book in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="properties__author d-flex align-items-center">
+                                            <div class="properties__author--thumb">
+                                                <img src="@book.Car?.Image? alt="img" style=" width: 150px;" />
+                                            </div>
+                                            <div class="reviews__author--text">
+                                                <h3 class="reviews__author--title">@book.Car?.Brand, @book.Car?.Model (@book.Car?.Year)</h3>
+                                                <p class="reviews__author--subtitle"></p>
+                                                <span class="properties__author--price">$@book.Car?.DailyRate/day</span>
+                                            </div>
                                         </div>
-                                        <div class="reviews__author--text">
-                                            <h3 class="reviews__author--title">@car.Brand, @car.Model (@car.Year)</h3>
-                                            <p class="reviews__author--subtitle"></p>
-                                            <span class="properties__author--price">$@car.DailyRate/day</span>
+                                    </td>
+                                    <td>
+                                        <span class="reviews__date">@book.Car?.CreatedAt?.ToString("dd MMM, yyyy")</span>
+                                    </td>
+                                    <td>
+                                        <span class="sales__report--status paid2">
+                                            @book.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="reviews__action--wrapper position-relative">
+                                            <button class="reviews__action--btn" aria-label="action button" type="button" aria-expanded="true" data-bs-toggle="dropdown">
+                                                <svg width="3" height="17" viewBox="0 0 3 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle cx="1.5" cy="1.5" r="1.5" fill="currentColor" />
+                                                    <circle cx="1.5" cy="8.5" r="1.5" fill="currentColor" />
+                                                    <circle cx="1.5" cy="15.5" r="1.5" fill="currentColor" />
+                                                </svg>
+                                            </button>
+                                            <ul class="dropdown-menu sold-out__user--dropdown" data-popper-placement="bottom-start">
+                                                <li>
+                                                    <!-- Edit Link -->
+                                                    <a asp-action="Edit" asp-controller="Bookings" asp-route-id="@book.BookingID" asp-area="Dashboard">
+                                                        Edit
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <!-- Delete Link -->
+                                                    <a asp-action="Delete" asp-controller="Bookings" asp-route-id="@book.BookingID" asp-area="Dashboard">
+                                                        Remove
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="reviews__date">@car.CreatedAt?.ToString("dd MMM, yyyy")</span>
-                                </td>
-                                <td>
-                                    <span class="sales__report--status
-                                        @(car.Status == "Available" ? "paid3" :
-                                            car.Status == "Maintenance" ? "processing" : "")">
-                                        @car.Status
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <div class="reviews__action--wrapper position-relative">
-                                        <button class="reviews__action--btn" aria-label="action button" type="button" aria-expanded="true" data-bs-toggle="dropdown">
-                                            <svg width="3" height="17" viewBox="0 0 3 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="1.5" cy="1.5" r="1.5" fill="currentColor" />
-                                                <circle cx="1.5" cy="8.5" r="1.5" fill="currentColor" />
-                                                <circle cx="1.5" cy="15.5" r="1.5" fill="currentColor" />
-                                            </svg>
-                                        </button>
-                                        <ul class="dropdown-menu sold-out__user--dropdown" data-popper-placement="bottom-start">
-                                            <li>
-                                                <!-- Edit Link -->
-                                                <a asp-action="Edit" asp-controller="Cars" asp-route-id="@car.CarID" asp-area="Dashboard">
-                                                    Edit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <!-- Delete Link -->
-                                                <a asp-action="Delete" asp-controller="Cars" asp-route-id="@car.CarID" asp-area="Dashboard">
-                                                    Remove
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-
-
+                                    </td>
+                                </tr>
+                            }
                     </tbody>
                 </table>
             </div>
@@ -127,6 +123,14 @@
                 </nav>
             </div>
         </div>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center" role="alert">
+                No cancelled bookings available.
+            </div>
+        }
+        
     </div>
     <!-- dashboard container .\ -->
 
