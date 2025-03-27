@@ -27,6 +27,38 @@ namespace CarRental.Areas.Dashboard.Controllers
             return View(await appDbContext.ToListAsync());
         }
 
+        public async Task<IActionResult> Pending()
+        {
+            var appDbContext = _context.Bookings
+                .Where(x => x.Status == BookingStatus.Pending.ToString())
+                .Include(b => b.Car);  // Ensure Car is included
+            return View(await appDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Cancelled()
+        {
+            var appDbContext = _context.Bookings
+                .Where(x => x.Status == BookingStatus.Cancelled.ToString())
+                .Include(b => b.Car);  // Ensure Car is included
+            return View(await appDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Completed()
+        {
+            var appDbContext = _context.Bookings
+                .Where(x => x.Status == BookingStatus.Completed.ToString())
+                .Include(b => b.Car);  // Ensure Car is included
+            return View(await appDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Confirmed()
+        {
+            var appDbContext = _context.Bookings
+                .Where(x => x.Status == BookingStatus.Confirmed.ToString())
+                .Include(b => b.Car);  // Ensure Car is included
+            return View(await appDbContext.ToListAsync());
+        }
+
         // GET: Dashboard/Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -58,7 +90,7 @@ namespace CarRental.Areas.Dashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,SecondName,ThirdName,ForthName,Email,PhoneNumber,BookingID,CarID,StartDate,EndDate,TotalPrice,Status,IsDeleted,CreatedAt")] Booking booking)
+        public async Task<IActionResult> Create(Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -83,6 +115,10 @@ namespace CarRental.Areas.Dashboard.Controllers
             {
                 return NotFound();
             }
+            ViewBag.BookingStatus = Enum.GetValues(typeof(BookingStatus))
+                                    .Cast<BookingStatus>()
+                                    .Select(s => new SelectListItem { Value = s.ToString(), Text = s.ToString() })
+                                    .ToList();
             ViewData["CarID"] = new SelectList(_context.Cars, "CarID", "CarID", booking.CarID);
             return View(booking);
         }
@@ -92,7 +128,7 @@ namespace CarRental.Areas.Dashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FirstName,SecondName,ThirdName,ForthName,Email,PhoneNumber,BookingID,CarID,StartDate,EndDate,TotalPrice,Status,IsDeleted,CreatedAt")] Booking booking)
+        public async Task<IActionResult> Edit(int id, Booking booking)
         {
             if (id != booking.BookingID)
             {
