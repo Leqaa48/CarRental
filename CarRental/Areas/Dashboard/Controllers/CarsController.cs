@@ -140,8 +140,24 @@ namespace CarRental.Areas.Dashboard.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.StatusList = Enum.GetValues(typeof(CarStatus))
+                                     .Cast<CarStatus>()
+                                     .Select(s => new SelectListItem { Value = s.ToString(), Text = s.ToString() })
+                                     .ToList();
+            ViewBag.FuelTypeList = Enum.GetValues(typeof(FuelTypeS))
+                                       .Cast<FuelTypeS>()
+                                       .Select(f => new SelectListItem { Value = f.ToString(), Text = f.ToString() })
+                                       .ToList();
+
+            ViewBag.TransmissionList = Enum.GetValues(typeof(TransmissionS))
+                                           .Cast<TransmissionS>()
+                                           .Select(t => new SelectListItem { Value = t.ToString(), Text = t.ToString() })
+                                           .ToList();
+
             return View(car);
         }
+
 
         // POST: Dashboard/Cars/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -159,6 +175,24 @@ namespace CarRental.Areas.Dashboard.Controllers
             {
                 try
                 {
+                    // Retrieve the existing car entity from the database
+                    var existingCar = await _context.Cars.FindAsync(id);
+                    if (existingCar == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update properties from the submitted car
+                    existingCar.Brand = car.Brand;
+                    existingCar.Model = car.Model;
+                    existingCar.Year = car.Year;
+                    existingCar.Seats = car.Seats;
+                    existingCar.FuelType = car.FuelType;
+                    existingCar.Transmission = car.Transmission;
+                    existingCar.DailyRate = car.DailyRate;
+                    existingCar.Status = car.Status;
+
+                    // Handle the image upload logic
                     if (car.ImageFile != null && car.ImageFile.Length > 0)
                     {
                         // Define the path to save the image
@@ -179,15 +213,18 @@ namespace CarRental.Areas.Dashboard.Controllers
                         }
 
                         // Update the image path in the model
-                        car.Image = $"/images/{fileName}";
+                        existingCar.Image = $"/images/{fileName}";
                     }
                     else
                     {
-                        // If no new file is uploaded, retain the existing image path
-                        var existingCategory = await _context.Cars.FindAsync(id);
-                        car.Image = existingCategory.Image;
+                        // If no new image is uploaded, retain the existing image path
+                        existingCar.Image = existingCar.Image;
                     }
-                    _context.Update(car);
+
+                    // Mark the entity as modified
+                    _context.Entry(existingCar).State = EntityState.Modified;
+
+                    // Save the changes
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -243,5 +280,6 @@ namespace CarRental.Areas.Dashboard.Controllers
         {
             return _context.Cars.Any(e => e.CarID == id);
         }
+
     }
 }

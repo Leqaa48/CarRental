@@ -5,10 +5,10 @@
 
 @if (TempData["ErrorMessage"] != null)
 {
-    <script>
-        alert("@TempData["ErrorMessage"]");
-    </script>
-}
+    <div class="alert alert-danger text-center" role="alert">
+        <strong>Error: </strong> @TempData["ErrorMessage"]
+    </div>
+}}
 
 <section class="container my-5 site-section">
     <div class="row justify-content-center">
@@ -136,9 +136,16 @@
                             </div> *@
 
                             <!-- Submit Button -->
-                            <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-primary btn-lg px-5">Rent Car</button>
-                            </div>
+                             <div class="col-12 text-center">
+            @if (Model.Status == "Confirmed")
+            {
+                <button type="button" class="btn btn-secondary btn-lg px-5" disabled>Car Already Booked</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary btn-lg px-5">Rent Car</button>
+            }
+        </div>
                         </div>
                     </form>
                 </div>

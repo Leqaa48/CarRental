@@ -45,10 +45,14 @@
                             </p>
 
                             <!-- Rent Now Button -->
-                            <a href="@Url.Action("RentCar", "Booking" , new { carId = car.CarID, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })"
-                               class="btn btn-primary btn-sm mt-auto">
+                            <a asp-controller="Booking" asp-action="RentCar"
+                               asp-route-carId="@car.CarID"
+                               asp-route-startDate="@(ViewBag.StartDate ?? DateTime.Now.ToString("yyyy-MM-ddTHH:mm"))"
+                               asp-route-endDate="@(ViewBag.EndDate ?? DateTime.Now.AddDays(1).ToString("yyyy-MM-ddTHH:mm"))"
+                               class="btn btn-primary">
                                 Rent Now
                             </a>
+
                         </div>
                     </div>
                 </div>

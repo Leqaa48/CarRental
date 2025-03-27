@@ -30,32 +30,37 @@
     1. Base CSS
 */
 :root {
-  --font-body-family: "Nunito", sans-serif;
-  --font-heading-family: "Inter", sans-serif;
-  --font-body-size: 1.6rem;
-  --font-body-weight: 400;
-  --font-heading-weight: 600;
-  --font-headings-weight: 700;
-  --font-line-height: 2.5rem;
-  --transition: all 0.3s ease 0s;
-  --duration-long: 500ms;
-  --color-shadow: rgba(0, 0, 0, 0.1);
-  --container-fluid-offset: 12rem;
-  --color-background: #fff;
-  --color-background-2: #26232A;
-  --color-background-3: #F1F5F9;
-  --color-background-4: #FAFAFA;
-  --color-background-5: #F8FAFC;
-  --color-background-6: #EFEFEF;
-  --color-foreground: #26232A;
-  --color-foreground-2: #333335;
-  --color-foreground-sub: #5E5F63;
-  --color-foreground-sub-2: #8C9097;
-  --color-border: #D9D9D9;
-  --color-border-2: #E2E8F0;
-  --color-hover: #16A34A;
-  --color-white: #fff;
+    --font-body-family: "Nunito", sans-serif;
+    --font-heading-family: "Inter", sans-serif;
+    --font-body-size: 1.6rem;
+    --font-body-weight: 400;
+    --font-heading-weight: 600;
+    --font-headings-weight: 700;
+    --font-line-height: 2.5rem;
+    --transition: all 0.3s ease 0s;
+    --duration-long: 500ms;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+    --container-fluid-offset: 12rem;
+    --color-background: #fff;
+    --color-background-2: #26232A;
+    --color-background-3: #F1F5F9;
+    --color-background-4: #FAFAFA;
+    --color-background-5: #F8FAFC;
+    --color-background-6: #EFEFEF;
+    --color-foreground: #26232A;
+    --color-foreground-2: #333335;
+    --color-foreground-sub: #5E5F63;
+    --color-foreground-sub-2: #8C9097;
+    --color-border: #D9D9D9;
+    --color-border-2: #E2E8F0;
+    --color-hover: #1D4ED8; 
+    --color-blue-light: #3B82F6; 
+    --color-blue-dark: #1E40AF; 
+    --color-blue-muted: #93C5FD; 
+    --color-white: #fff;
 }
+
+
 
 .color-offwhite {
   --color-foreground: #B4B4B4;

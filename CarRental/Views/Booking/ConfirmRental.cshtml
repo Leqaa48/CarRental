@@ -22,7 +22,7 @@
                     <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
 
                     <h5 class="mt-4">Customer Information:</h5>
-                    <p><strong>Name:</strong> @Model.FirstName @Model.SecondName @Model.ThirdName @Model.ForthName</p>
+                    <p><strong>Name:</strong> @Model.FirstName @Model.SecondName @Model.ThirdName @Model.LastName</p>
                     <p><strong>Email:</strong> @Model.Email</p>
                     <p><strong>Phone:</strong> @Model.PhoneNumber</p>
 
@@ -34,7 +34,7 @@
                             <input type="hidden" name="FirstName" value="@Model.FirstName" />
                             <input type="hidden" name="SecondName" value="@Model.SecondName" />
                             <input type="hidden" name="ThirdName" value="@Model.ThirdName" />
-                            <input type="hidden" name="ForthName" value="@Model.ForthName" />
+                            <input type="hidden" name="ForthName" value="@Model.LastName" />
                             <input type="hidden" name="Email" value="@Model.Email" />
                             <input type="hidden" name="PhoneNumber" value="@Model.PhoneNumber" />
                             <button type="submit" class="btn btn-primary btn-lg flex-fill">Confirm</button>

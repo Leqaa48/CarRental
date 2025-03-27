@@ -4,6 +4,7 @@ using CarRental.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRental.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325232909_UpdateConfirming")]
+    partial class UpdateConfirming
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,12 +51,12 @@ namespace CarRental.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("ForthName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -130,35 +133,6 @@ namespace CarRental.Migrations
                     b.HasKey("CarID");
 
                     b.ToTable("Cars");
-                });
-
-            modelBuilder.Entity("CarRental.Models.Contact", b =>
-                {
-                    b.Property<int>("MessageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MessageId");
-
-                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("CarRental.Models.Payment", b =>
