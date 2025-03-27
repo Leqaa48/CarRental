@@ -59,10 +59,6 @@ namespace CarRental.Controllers
 
 
 
-
-
-
-
         public IActionResult Privacy()
         {
             return View();
@@ -73,5 +69,33 @@ namespace CarRental.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+        [HttpGet]
+        public IActionResult Contact()
+        {
+            return View(new Contact());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Contact(Contact model)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Contacts.Add(model);
+                await _context.SaveChangesAsync();
+                ViewBag.Message = "Your message has been sent successfully!";
+                ModelState.Clear();
+                return View(new Contact());
+            }
+            return View(model);
+        }
+
+
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+
     }
 }

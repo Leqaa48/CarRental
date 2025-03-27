@@ -26,9 +26,8 @@
                     <p><strong>Email:</strong> @Model.Email</p>
                     <p><strong>Phone:</strong> @Model.PhoneNumber</p>
 
-                    <div class="mt-4 text-center">
-                        <!-- Confirm button -->
-                        <form asp-action="ConfirmBooking" method="post">
+                    <div class="mt-4 text-center d-flex justify-content-center gap-3">
+                        <form asp-action="ConfirmBooking" method="post" class="d-flex flex-grow-1">
                             <input type="hidden" name="CarID" value="@Model.CarID" />
                             <input type="hidden" name="StartDate" value="@Model.StartDate" />
                             <input type="hidden" name="EndDate" value="@Model.EndDate" />
@@ -38,11 +37,10 @@
                             <input type="hidden" name="ForthName" value="@Model.ForthName" />
                             <input type="hidden" name="Email" value="@Model.Email" />
                             <input type="hidden" name="PhoneNumber" value="@Model.PhoneNumber" />
-                            <button type="submit" class="btn btn-primary btn-lg px-5">Confirm</button>
+                            <button type="submit" class="btn btn-primary btn-lg flex-fill">Confirm</button>
                         </form>
 
-                        <!-- Cancel button -->
-                        <a href="@Url.Action("Index", "Home")" class="btn btn-secondary btn-lg px-5">Cancel</a>
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-secondary btn-lg flex-fill text-center">Cancel</a>
                     </div>
                 </div>
             </div>

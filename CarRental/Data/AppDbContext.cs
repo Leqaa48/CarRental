@@ -13,6 +13,7 @@ namespace CarRental.Data
        public DbSet<Car> Cars { get; set; }
         public DbSet<Booking> Bookings { get; set; }    
         public DbSet<Payment> Payment { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
     }
 }
