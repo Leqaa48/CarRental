@@ -29,10 +29,9 @@ namespace CarRental.Controllers
             if (startDate.HasValue && endDate.HasValue)
             {
                 var bookedCarIds = await _context.Bookings
-                    .Where(b => b.Status == "Confirmed" &&
-                        ((startDate.Value >= b.StartDate && startDate.Value < b.EndDate) ||
-                         (endDate.Value > b.StartDate && endDate.Value <= b.EndDate) ||
-                         (startDate.Value <= b.StartDate && endDate.Value >= b.EndDate)))
+                    .Where(b => b.Status == "Pending" &&
+                        ((startDate.Value < b.EndDate && endDate.Value > b.StartDate) 
+                    ))
                     .Select(b => b.CarID)
                     .Distinct()
                     .ToListAsync();
@@ -42,6 +41,8 @@ namespace CarRental.Controllers
 
             int totalCars = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(totalCars / (double)pageSize);
+
+            page = Math.Max(1, Math.Min(page, totalPages));
 
             var paginatedCars = await query
                 .OrderBy(c => c.Brand)
@@ -56,6 +57,7 @@ namespace CarRental.Controllers
 
             return View(paginatedCars);
         }
+
 
 
 
