@@ -14,6 +14,7 @@ namespace CarRental.Data
         public DbSet<Booking> Bookings { get; set; }    
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<CompanyInfo> Infos { get; set; }
 
     }
 }
