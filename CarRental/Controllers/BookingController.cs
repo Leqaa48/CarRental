@@ -128,7 +128,7 @@ namespace CarRental.Controllers
                 return RedirectToAction("BookingSuccess"); // Redirect to a success page
             }
 
-            return View("BookingConfirmation", booking); // Re-render if validation fails
+            return View("BookingSuccess", booking); // Re-render if validation fails
         }
 
         public IActionResult BookingSuccess()

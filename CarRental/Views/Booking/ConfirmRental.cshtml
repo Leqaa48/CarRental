@@ -11,6 +11,7 @@
                 <div class="card-body p-4">
                     <h3 class="text-center mb-4 fw-bold">Booking Confirmation</h3>
 
+                    <!-- Car Details -->
                     <h5 class="fw-semibold">@Model.Car.Brand @Model.Car.Model (@Model.Car.Year)</h5>
                     <p><strong>Plate Number:</strong> @Model.Car.CarID</p>
                     <p><strong>Fuel Type:</strong> @Model.Car.FuelType</p>
@@ -21,11 +22,13 @@
                     <p><strong>End Date:</strong> @Model.EndDate.ToString("yyyy-MM-dd HH:mm")</p>
                     <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
 
+                    <!-- Customer Information -->
                     <h5 class="mt-4">Customer Information:</h5>
                     <p><strong>Name:</strong> @Model.FirstName @Model.SecondName @Model.ThirdName @Model.LastName</p>
                     <p><strong>Email:</strong> @Model.Email</p>
                     <p><strong>Phone:</strong> @Model.PhoneNumber</p>
 
+                    <!-- Action Buttons -->
                     <div class="mt-4 text-center d-flex justify-content-center gap-3">
                         <form asp-action="ConfirmBooking" method="post" class="d-flex flex-grow-1">
                             <input type="hidden" name="CarID" value="@Model.CarID" />

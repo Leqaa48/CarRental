@@ -11,13 +11,21 @@ namespace CarRental.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
-
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        private readonly EmailService _emailService;
+        public HomeController(ILogger<HomeController> logger, AppDbContext context , EmailService emailService)
         {
             _logger = logger;
             _context = context;
+            _emailService = emailService;
         }
+        
 
+        public async Task<IActionResult> SendWelcomeEmail()
+        {
+            string emailBody = "<h1>Welcome to our Service</h1><p>We're glad to have you with us!</p>";
+            await _emailService.SendEmailAsync("recipient@example.com", "Welcome!", emailBody);
+            return View();
+        }
         public IActionResult Index()
         {
             return View();

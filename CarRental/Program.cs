@@ -2,7 +2,6 @@ using CarRental.Data;
 using CarRental.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace CarRental
 {
@@ -18,6 +17,7 @@ namespace CarRental
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("CarRental"));
             });
+            builder.Services.AddSingleton<EmailService>(); 
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()

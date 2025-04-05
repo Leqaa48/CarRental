@@ -8,7 +8,7 @@
     <div class="alert alert-danger text-center" role="alert">
         <strong>Error: </strong> @TempData["ErrorMessage"]
     </div>
-}}
+}
 
 <section class="container my-5 site-section">
     <div class="row justify-content-center">
@@ -20,23 +20,24 @@
                     <!-- Car Details -->
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <img src="@Model.Car.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
+                            <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
                         </div>
                         <div class="col-md-6 d-flex flex-column justify-content-center">
-                            <h5 class="fw-semibold">@Model.Car.Brand @Model.Car.Model (@Model.Car.Year)</h5>
-                            <p><strong >Plate Number:</strong> @Model.Car.CarID</p>
-                            <p><strong>Price per Hour:</strong> @Model.Car.DailyRate.ToString("C")</p>
-                            <p><strong>Fuel Type:</strong> @Model.Car.FuelType</p>
-                            <p><strong>Transmission:</strong> @Model.Car.Transmission</p>
-                            <p><strong>Seats:</strong> @Model.Car.Seats</p>
+                            <h5 class="fw-semibold">@Model.Car?.Brand @Model.Car?.Model (@Model.Car?.Year)</h5>
+                            <p><strong>Plate Number:</strong> @Model.Car?.CarID</p>
+                            <p><strong>Price per Hour:</strong> @Model.Car?.DailyRate.ToString("C")</p>
+                            <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
+                            <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
+                            <p><strong>Seats:</strong> @Model.Car?.Seats</p>
                         </div>
                     </div>
 
                     <!-- Booking Form -->
                     <form asp-action="ConfirmRental" asp-controller="Booking" method="get" class="needs-validation" novalidate>
                         <div class="row">
+                            <input type="hidden" name="carID" value="@Model.Car?.CarID" />
+
                             <!-- Start & End Date -->
-                            <input type="hidden" name="carID" value="@Model.Car.CarID" />
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="datetime-local" class="form-control" id="StartDate" name="StartDate" value="@ViewData["StartDate"]" required min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
@@ -55,7 +56,7 @@
                                 <p class="fs-5 fw-semibold">Total Price: <span id="totalPrice" class="text-primary">@ViewData["TotalPrice"]</span></p>
                             </div>
 
-                            <!-- Personal Information -->
+                            <!-- Personal Info -->
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="FirstName" name="FirstName" required>
@@ -68,7 +69,6 @@
                                     <label for="SecondName">Second Name</label>
                                 </div>
                             </div>
-
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="ThirdName" name="ThirdName" required>
@@ -78,7 +78,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="ForthName" name="ForthName" required>
-                                    <label for="ForthName">Fourth Name</label>
+                                    <label for="ForthName">Last Name</label>
                                 </div>
                             </div>
 
@@ -118,34 +118,28 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" required placeholder="Enter phone number">
+                                    <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber"
+                                           pattern="^\d{7,15}$" required
+                                           placeholder="e.g. 786634288"
+                                           title="Enter your number without the country code. Only digits (7 to 15).">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid phone number with 7 to 15 digits (no country code).
+                                    </div>
                                     <label for="PhoneNumber">Mobile Number</label>
                                 </div>
                             </div>
 
-                            <!-- Payment Method -->
-                            @* <div class="col-12">
-                                <div class="form-floating mb-3">
-                                    <select class="form-select" id="PaymentMethod" name="PaymentMethod" required>
-                                        <option value="">Choose Payment Method</option>
-                                        <option value="Paypal">PayPal</option>
-                                        <option value="Visa">Visa</option>
-                                    </select>
-                                    <label for="PaymentMethod">Payment Method</label>
-                                </div>
-                            </div> *@
-
-                            <!-- Submit Button -->
-                             <div class="col-12 text-center">
-            @if (Model.Status == "Confirmed")
-            {
-                <button type="button" class="btn btn-secondary btn-lg px-5" disabled>Car Already Booked</button>
-            }
-            else
-            {
-                <button type="submit" class="btn btn-primary btn-lg px-5">Rent Car</button>
-            }
-        </div>
+                            <!-- Submit -->
+                            <div class="col-12 text-center">
+                                @if (Model.Status == "Confirmed")
+                                {
+                                    <button type="button" class="btn btn-secondary btn-lg px-5" disabled>Car Already Booked</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">Rent Car</button>
+                                }
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -167,27 +161,44 @@
 
 <!-- JavaScript -->
 <script>
-    document.getElementById("carImage").addEventListener("click", function () {
-        document.getElementById("fullImage").src = this.src;
-        new bootstrap.Modal(document.getElementById("imageModal")).show();
-    });
+    (() => {
+        'use strict';
 
-    function calculateTotalPrice() {
-        const startDate = new Date(document.getElementById("StartDate").value);
-        const endDate = new Date(document.getElementById("EndDate").value);
-        const hourlyRate = @Model.Car.DailyRate;
+        // Bootstrap validation
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
 
-        if (startDate && endDate && endDate > startDate) {
-            const hoursDiff = (endDate - startDate) / 1000 / 3600;
-            const price = hourlyRate * hoursDiff;
-            document.getElementById("totalPrice").textContent = `$${price.toFixed(2)}`;
+                form.classList.add('was-validated');
+            }, false);
+        });
+
+        // Lightbox for car image
+        document.getElementById("carImage").addEventListener("click", function () {
+            document.getElementById("fullImage").src = this.src;
+            new bootstrap.Modal(document.getElementById("imageModal")).show();
+        });
+
+        // Price Calculation
+        function calculateTotalPrice() {
+            const startDate = new Date(document.getElementById("StartDate").value);
+            const endDate = new Date(document.getElementById("EndDate").value);
+            const hourlyRate = @Model.Car?.DailyRate;
+
+            if (startDate && endDate && endDate > startDate) {
+                const hoursDiff = (endDate - startDate) / 1000 / 3600;
+                const price = hourlyRate * hoursDiff;
+                document.getElementById("totalPrice").textContent = `$${price.toFixed(2)}`;
+            } else {
+                document.getElementById("totalPrice").textContent = "Invalid date range";
+            }
         }
-    }
 
-    document.getElementById("StartDate").addEventListener("change", calculateTotalPrice);
-    document.getElementById("EndDate").addEventListener("change", calculateTotalPrice);
-
-    document.querySelector("form").addEventListener("submit", function () {
-        document.getElementById("PhoneNumber").value = document.getElementById("CountryCode").value + document.getElementById("PhoneNumber").value;
-    });
+        document.getElementById("StartDate").addEventListener("change", calculateTotalPrice);
+        document.getElementById("EndDate").addEventListener("change", calculateTotalPrice);
+    })();
 </script>
