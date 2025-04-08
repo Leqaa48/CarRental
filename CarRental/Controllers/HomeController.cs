@@ -34,11 +34,41 @@ namespace CarRental.Controllers
             return View();
         }
 
-        public IActionResult CarList()
+        public async Task<IActionResult> CarList( int page = 1, int pageSize = 1000)
         {
-            // Fetch the list of cars from the database
-            var cars = _context.Cars.ToList();
-            return View(cars);
+            var query = _context.Cars.Where(c => c.Status == "Available");
+            DateTime? startDate = Convert.ToDateTime(TempData["StartDate"]);
+            DateTime? endDate = Convert.ToDateTime(TempData["EndDate"]);
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                var bookedCarIds = await _context.Bookings
+                    .Where(b => b.Status == "Pending" &&
+                        ((startDate.Value < b.EndDate && endDate.Value > b.StartDate)
+                    ))
+                    .Select(b => b.CarID)
+                    .Distinct()
+                    .ToListAsync();
+
+                query = query.Where(c => !bookedCarIds.Contains(c.CarID));
+            }
+
+            int totalCars = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalCars / (double)pageSize);
+
+            page = Math.Max(1, Math.Min(page, totalPages));
+
+            var paginatedCars = await query
+                .OrderBy(c => c.Brand)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-ddTHH:mm");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-ddTHH:mm");
+
+            return View(paginatedCars);
         }
 
         public IActionResult Privacy()
