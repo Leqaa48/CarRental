@@ -11,22 +11,44 @@
                 <div class="card-body p-4">
                     <h3 class="text-center mb-4 fw-bold">Booking Confirmation</h3>
 
+                    <!-- Display Success or Error Messages -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                    }
+
                     <!-- Car Details -->
-                    <h5 class="fw-semibold">@Model.Car.Brand @Model.Car.Model (@Model.Car.Year)</h5>
-                    <p><strong>Plate Number:</strong> @Model.Car.CarID</p>
-                    <p><strong>Fuel Type:</strong> @Model.Car.FuelType</p>
-                    <p><strong>Transmission:</strong> @Model.Car.Transmission</p>
-                    <p><strong>Seats:</strong> @Model.Car.Seats</p>
-                    <p><strong>Price per Hour:</strong> @Model.Car.DailyRate.ToString("C")</p>
-                    <p><strong>Start Date:</strong> @Model.StartDate.ToString("yyyy-MM-dd HH:mm")</p>
+                    @if (Model.Car != null)
+                    {
+                        <h5 class="fw-semibold">@Model.Car.Brand @Model.Car.Model (@Model.Car.Year)</h5>
+                        <p><strong>Plate Number:</strong> @Model.Car.CarID</p>
+                        <p><strong>Fuel Type:</strong> @Model.Car.FuelType</p>
+                        <p><strong>Transmission:</strong> @Model.Car.Transmission</p>
+                        <p><strong>Seats:</strong> @Model.Car.Seats</p>
+                        <p><strong>Price per Hour:</strong> @Model.Car.DailyRate.ToString("C")</p>
+                    }
+
+                    <p><strong>Start Date:</strong> @(Model.StartDate.ToString("yyyy-MM-dd HH:mm") ?? "")</p>
                     <p><strong>End Date:</strong> @Model.EndDate.ToString("yyyy-MM-dd HH:mm")</p>
                     <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
+
+                    <!-- Flight Information -->
+                    <h5 class="mt-4">Flight Information:</h5>
+                    <p><strong>Flight Name:</strong> @Model.FlightName</p>
+                    <p><strong>Flight Number:</strong> @Model.FlightNumber</p>
 
                     <!-- Customer Information -->
                     <h5 class="mt-4">Customer Information:</h5>
                     <p><strong>Name:</strong> @Model.FirstName @Model.SecondName @Model.ThirdName @Model.LastName</p>
                     <p><strong>Email:</strong> @Model.Email</p>
                     <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+
+     
 
                     <!-- Action Buttons -->
                     <div class="mt-4 text-center d-flex justify-content-center gap-3">
@@ -37,14 +59,41 @@
                             <input type="hidden" name="FirstName" value="@Model.FirstName" />
                             <input type="hidden" name="SecondName" value="@Model.SecondName" />
                             <input type="hidden" name="ThirdName" value="@Model.ThirdName" />
-                            <input type="hidden" name="ForthName" value="@Model.LastName" />
+                            <input type="hidden" name="LastName" value="@Model.LastName" />
                             <input type="hidden" name="Email" value="@Model.Email" />
                             <input type="hidden" name="PhoneNumber" value="@Model.PhoneNumber" />
+                            <input type="hidden" name="FlightName" value="@Model.FlightName" />
+                            <input type="hidden" name="FlightNumber" value="@Model.FlightNumber" />
+                            <!-- Hidden Fields for Required Information -->
+                            <input type="hidden" name="CVC" value="@Model.CVC" />
+                            <input type="hidden" name="City" value="@Model.City" />
+                            <input type="hidden" name="Address" value="@Model.Address" />
+                            <input type="hidden" name="PostCode" value="@Model.PostCode" />
+                            <input type="hidden" name="ExpiryDate" value="@Model.ExpiryDate" />
+                            <input type="hidden" name="CardholdersName" value="@Model.CardholdersName" />
+                            <input type="hidden" name="CardholdersNumber" value="@Model.CardholdersNumber" />
+
                             <button type="submit" class="btn btn-primary btn-lg flex-fill">Confirm</button>
                         </form>
 
                         <a href="@Url.Action("Index", "Home")" class="btn btn-secondary btn-lg flex-fill text-center">Cancel</a>
                     </div>
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Please fix the following errors:</strong>
+                            <ul>
+                                @foreach (var entry in ViewData.ModelState)
+                                {
+                                    foreach (var error in entry.Value.Errors)
+                                    {
+                                        <li>@error.ErrorMessage</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

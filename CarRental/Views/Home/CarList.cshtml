@@ -41,14 +41,12 @@
                                 <span><strong>Seats:</strong> @car.Seats</span>
                             </div>
                             <p class="status">
-                                 @car.Status
+                                @car.Status
                             </p>
 
                             <!-- Rent Now Button -->
                             <a asp-controller="Booking" asp-action="RentCar"
                                asp-route-carId="@car.CarID"
-                               asp-route-startDate="@(ViewBag.StartDate ?? DateTime.Now.ToString("yyyy-MM-ddTHH:mm"))"
-                               asp-route-endDate="@(ViewBag.EndDate ?? DateTime.Now.AddDays(1).ToString("yyyy-MM-ddTHH:mm"))"
                                class="btn btn-primary">
                                 Rent Now
                             </a>
@@ -57,35 +55,6 @@
                     </div>
                 </div>
             }
-        </div>
-
-        <!-- Pagination -->
-        <div class="row">
-            <div class="col-12">
-                <div class="custom-pagination">
-                    @if (ViewBag.CurrentPage > 1)
-                    {
-                        <a href="@Url.Action("CarList", new { page = ViewBag.CurrentPage - 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })">«</a>
-                    }
-
-                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                    {
-                        if (i == ViewBag.CurrentPage)
-                        {
-                            <span class="active">@i</span>
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("CarList", new { page = i, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })">@i</a>
-                        }
-                    }
-
-                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-                    {
-                        <a href="@Url.Action("CarList", new { page = ViewBag.CurrentPage + 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })">»</a>
-                    }
-                </div>
-            </div>
         </div>
     </div>
 </div>

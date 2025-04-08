@@ -56,7 +56,7 @@
                                 <select class="add__listing--form__select" id="Transmission" name="Transmission" asp-items="@ViewBag.TransmissionList"></select>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-6">
                             <div class="add__listing--input__box mb-20">
                                 <label class="add__listing--input__label" for="DailyRate">Daily Rate</label>
@@ -89,6 +89,7 @@
         </div>
     </div>
 </main>
+
 <script>
     function showFileName(input) {
         const fileName = input.files[0]?.name || "No file chosen";

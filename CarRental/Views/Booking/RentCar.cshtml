@@ -37,95 +37,153 @@
                         <div class="row">
                             <input type="hidden" name="carID" value="@Model.Car?.CarID" />
 
-                            <!-- Start & End Date -->
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="datetime-local" class="form-control" id="StartDate" name="StartDate" value="@ViewData["StartDate"]" required min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
-                                    <label for="StartDate">Start Date</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="datetime-local" class="form-control" id="EndDate" name="EndDate" value="@ViewData["EndDate"]" required min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
-                                    <label for="EndDate">End Date</label>
-                                </div>
-                            </div>
-
-                            <!-- Total Price -->
-                            <div class="col-12 mb-3">
-                                <p class="fs-5 fw-semibold">Total Price: <span id="totalPrice" class="text-primary">@ViewData["TotalPrice"]</span></p>
-                            </div>
-
-                            <!-- Personal Info -->
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="FirstName" name="FirstName" required>
-                                    <label for="FirstName">First Name</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="SecondName" name="SecondName" required>
-                                    <label for="SecondName">Second Name</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="ThirdName" name="ThirdName" required>
-                                    <label for="ThirdName">Third Name</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="ForthName" name="ForthName" required>
-                                    <label for="ForthName">Last Name</label>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
+                            <!-- Main Driver's Details -->
+                            <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
+                                <h5 class="fw-bold text-black">Main Driver's Details</h5>
                                 <div class="form-floating mb-3">
                                     <input type="email" class="form-control" id="Email" name="Email" required>
-                                    <label for="Email">Email</label>
+                                    <label for="Email">Email Address</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="FirstName" name="FirstName" required>
+                                        <label for="FirstName">First Name</label>
+                                    </div>
+                                </div>
+                                 <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="SecondName" name="SecondName" required>
+                                        <label for="SecondName">Second Name</label>
+                                    </div>
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="ThirdName" name="ThirdName" required>
+                                        <label for="ThirdName">Third Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="LastName" name="LastName" required>
+                                        <label for="LastName">Last Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="CountryCode" name="CountryCode" required>
+                                            <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
+                                            <option value="+1">🇺🇸 +1 (USA)</option>
+                                            <option value="+44">🇬🇧 +44 (UK)</option>
+                                        </select>
+                                        <label for="CountryCode">Country Code</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber"
+                                               pattern="^\d{7,15}$" required
+                                               placeholder="e.g. 786634288"
+                                               title="Enter your number without the country code. Only digits (7 to 15).">
+                                        <div class="invalid-feedback">
+                                            Please enter a valid phone number with 7 to 15 digits (no country code).
+                                        </div>
+                                        <label for="PhoneNumber">Contact Number</label>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Mobile Number -->
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <select class="form-select" id="CountryCode" name="CountryCode" required>
-                                        <option value="+1">🇺🇸 +1 (USA)</option>
-                                        <option value="+44">🇬🇧 +44 (UK)</option>
-                                        <option value="+971">🇦🇪 +971 (UAE)</option>
-                                        <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
-                                        <option value="+20">🇪🇬 +20 (Egypt)</option>
-                                        <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
-                                        <option value="+965">🇰🇼 +965 (Kuwait)</option>
-                                        <option value="+974">🇶🇦 +974 (Qatar)</option>
-                                        <option value="+968">🇴🇲 +968 (Oman)</option>
-                                        <option value="+212">🇲🇦 +212 (Morocco)</option>
-                                        <option value="+216">🇹🇳 +216 (Tunisia)</option>
-                                        <option value="+213">🇩🇿 +213 (Algeria)</option>
-                                        <option value="+961">🇱🇧 +961 (Lebanon)</option>
-                                        <option value="+90">🇹🇷 +90 (Turkey)</option>
-                                        <option value="+91">🇮🇳 +91 (India)</option>
-                                        <option value="+33">🇫🇷 +33 (France)</option>
-                                        <option value="+49">🇩🇪 +49 (Germany)</option>
-                                        <option value="+81">🇯🇵 +81 (Japan)</option>
-                                        <option value="+86">🇨🇳 +86 (China)</option>
-                                    </select>
-                                    <label for="CountryCode">Country Code</label>
+                            <!-- Flight Details -->
+                            <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
+                                <h5 class="fw-bold text-black">Add Your Flight Details</h5>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="FlightName" name="FlightName" required>
+                                        <label for="FlightName">Flight Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="FlightNumber" name="FlightNumber" required>
+                                        <label for="FlightNumber">Flight Number</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber"
-                                           pattern="^\d{7,15}$" required
-                                           placeholder="e.g. 786634288"
-                                           title="Enter your number without the country code. Only digits (7 to 15).">
-                                    <div class="invalid-feedback">
-                                        Please enter a valid phone number with 7 to 15 digits (no country code).
+
+                            <!-- Billing Address -->
+                            <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
+                                <h5 class="fw-bold text-black">Billing Address</h5>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="BillingFirstName" name="BillingFirstName" required>
+                                        <label for="BillingFirstName">First Name</label>
                                     </div>
-                                    <label for="PhoneNumber">Mobile Number</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="BillingLastName" name="BillingLastName" required>
+                                        <label for="BillingLastName">Last Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="BillingCountryCode" name="BillingCountryCode" required>
+                                            <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
+                                            <option value="+1">🇺🇸 +1 (USA)</option>
+                                            <option value="+44">🇬🇧 +44 (UK)</option>
+                                        </select>
+                                        <label for="BillingCountryCode">Country Code</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="Address" name="Address" required>
+                                        <label for="Address">Address</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="City" name="City" required>
+                                        <label for="City">City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="PostCode" name="PostCode" required>
+                                        <label for="PostCode">Postcode</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Information -->
+                            <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
+                                <h5 class="fw-bold text-black">How Would You Like to Pay?</h5>
+                                <div class="d-flex mb-3">
+                                    <img src="~/images/visa.png" alt="Visa" class="me-2" style="width: 40px; height: auto;">
+                                    <img src="~/images/mastercard.png" alt="MasterCard" class="me-2" style="width: 40px; height: auto;">
+                                    <img src="~/images/amex.png" alt="American Express" class="me-2" style="width: 40px; height: auto;">
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="CardholdersName" name="CardholdersName" required>
+                                    <label for="CardholdersName">Cardholder's Name</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="CardholdersNumber" name="CardholdersNumber" required>
+                                    <label for="CardholdersNumber">Card Number</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="ExpiryDate" name="ExpiryDate" placeholder="MM/YY" required>
+                                            <label for="ExpiryDate">Expiry Date</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="CVC" name="CVC" required>
+                                            <label for="CVC">CVC</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

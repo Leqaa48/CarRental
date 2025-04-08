@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Loading";
+}
+
+<div class="loader-container">
+    <div class="loader">
+        <img src="~/images/avis.png" alt="Company Logo 1" class="logo">
+        <img src="~/images/dollar.png" alt="Company Logo 2" class="logo">
+        <img src="~/images/ent.png" alt="Company Logo 3" class="logo">
+        <img src="~/images/eu.png" alt="Company Logo 4" class="logo">
+        <img src="~/images/goldcar.jpeg" alt="Company Logo 5" class="logo">
+        <img src="~/images/hertz.png" alt="Company Logo 6" class="logo">
+        <img src="~/images/keddy.jpeg" alt="Company Logo 6" class="logo">
+        <img src="~/images/sixt.png" alt="Company Logo 6" class="logo">
+    </div>
+    <p>Checking the top companies to find the best deals...</p>
+</div>
+
+<style>
+    .loader-container {
+        text-align: center;
+        margin-top: 20%;
+    }
+    .loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+    .logo {
+        width: 100px; /* Adjust as needed */
+        animation: spin 1s linear infinite;
+    }
+    @@keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<script>
+    // Redirect after 6 seconds
+    setTimeout(function() {
+        window.location.href = '@Url.Action("CarList", "Home")'; // Adjust to your actual action and controller
+    }, 3000);
+</script>

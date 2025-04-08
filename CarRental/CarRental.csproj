@@ -30,6 +30,7 @@
   <ItemGroup>
     <Folder Include="Areas\Dashboard\Data\" />
     <Folder Include="Areas\Dashboard\Models\" />
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 using CarRental.Data;
+using CarRental.Models;
 using CarRental.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,15 +14,22 @@ namespace CarRental
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Configure database context
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("CarRental"));
             });
-            builder.Services.AddSingleton<EmailService>(); 
 
+            // Register EmailService as a singleton
+            builder.Services.AddSingleton<EmailService>();
+            builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+
+            // Configure identity services
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
             builder.Services.AddScoped<UserManager<ApplicationUser>>();
             builder.Services.AddScoped<RoleManager<IdentityRole>>();
 
@@ -31,7 +39,6 @@ namespace CarRental
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -42,14 +49,14 @@ namespace CarRental
 
             app.UseAuthorization();
             app.MapControllerRoute(
-           name: "areas",
-           pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-         );
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            );
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-           
+                pattern: "{controller=Home}/{action=Index}/{id?}"
+            );
 
             app.Run();
         }

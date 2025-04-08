@@ -14,6 +14,17 @@ namespace CarRental.Models
         //public string PaymentMethod { get; set; }
         public int BookingID { get; set; }
         public string CarID { get; set; }
+        public string FlightName { get; set; }
+        public string FlightNumber { get; set; }
+
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string PostCode { get; set; }
+        public string CardholdersName { get; set; }
+        public string CardholdersNumber { get; set; }
+        public string ExpiryDate { get; set; }
+        public string CVC { get; set; }
+
         public Car? Car { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
