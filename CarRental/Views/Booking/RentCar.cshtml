@@ -1,4 +1,73 @@
 ﻿@model Booking
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Car Deal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 18px;
+            margin: 0;
+        }
+        .details {
+            margin-top: 10px;
+            color: #666;
+        }
+        .protection-options {
+            margin-top: 20px;
+        }
+        .options-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .protection-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .protection-table th, .protection-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .protection-table th {
+            background-color: #f2f2f2;
+        }
+        .total-cost {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .note {
+            color: #666;
+            font-size: 12px;
+        }
+        .refund {
+            color: green;
+        }
+        .no-refund {
+            color: red;
+        }
+        .fast-reliable {
+            background-color: #e7f4e4;
+            padding: 10px;
+            border-left: 5px solid #4caf50;
+        }
+    </style>
 @{
     ViewData["Title"] = "Rent Car";
 }
@@ -9,263 +78,390 @@
         <strong>Error: </strong> @TempData["ErrorMessage"]
     </div>
 }
+<style>
+    .panel {
+        display: none;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
 
+    .active {
+        display: block;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .btn:disabled {
+            background: #ccc;
+        }
+</style>
 <section class="container my-5 site-section">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-4">
                     <h3 class="text-center mb-4 fw-bold">Rent a Car</h3>
+                    <div id="panel1" class="panel active">
 
-                    <!-- Car Details -->
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
-                        </div>
-                        <div class="col-md-6 d-flex flex-column justify-content-center">
-                            <h5 class="fw-semibold">@Model.Car?.Brand @Model.Car?.Model (@Model.Car?.Year)</h5>
-                            <p><strong>Plate Number:</strong> @Model.Car?.CarID</p>
-                            <p><strong>Price per Hour:</strong> @Model.Car?.DailyRate.ToString("C")</p>
-                            <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
-                            <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
-                            <p><strong>Seats:</strong> @Model.Car?.Seats</p>
-                        </div>
-                    </div>
+                        <div>
 
 
-                    <!-- Great Choice Section -->
-                    <div style="border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
-                        <h2 style="font-weight: bold;">Great choice!</h2>
-                        <ul style="list-style: none; padding-left: 0;">
-                            <li style="margin-bottom: 5px;">✅ Customer rating: 8.5 / 10</li>
-                            <li style="margin-bottom: 5px;">✅ Rental counter in terminal</li>
-                            <li style="margin-bottom: 5px;">✅ Short queues</li>
-                            <li style="margin-bottom: 5px;">✅ Most popular company here</li>
-                            <li style="margin-bottom: 5px;">✅ Most popular fuel policy</li>
-                            <li style="margin-bottom: 5px;">✅ Easy to find counter</li>
-                        </ul>
-                        <img src="your_image_url_here" alt="Keys with checkmark" style="float: right; width: 80px; margin-top: -100px;">
-                    </div>
-
-                    <!-- Customer Feedback -->
-                    <div style="border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
-                        <h2 style="font-weight: bold;">What travellers say about Budget</h2>
-                        <p>Here's what customers mentioned most often in genuine reviews for Budget at Queen Alia International Airport.</p>
-                        <button style="background-color: #fff; border: 1px solid green; color: green; padding: 5px 10px; border-radius: 5px; margin-right: 10px;">😊 Staff service</button>
-                        <button style="background-color: #fff; border: 1px solid green; color: green; padding: 5px 10px; border-radius: 5px;">😊 Pick-up speed</button>
-                    </div>
-
-                    <!-- Included in the price -->
-                    <div style="border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
-                        <h2 style="font-weight: bold;">Included in the price</h2>
-                        <ul style="list-style: none; padding-left: 0;">
-                            <li style="margin-bottom: 5px;">✅ Collision Damage Waiver with US$493 excess</li>
-                            <li style="margin-bottom: 5px;">✅ Theft Protection with US$493 excess</li>
-                            <li style="margin-bottom: 5px;">✅ Unlimited mileage</li>
-                        </ul>
-                    </div>
-
-                    <!-- Extras -->
-                    <div style="border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
-                        <h2 style="font-weight: bold;">Add extras, complete your trip</h2>
-                        <div style="display: flex; gap: 20px;">
-                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-                                <p style="margin: 0; font-weight: bold;">Additional driver</p>
-                                <p style="margin: 0;">US$21.15 each per rental</p>
-                                <p style="margin: 0; font-size: 12px;">If you want other people to drive as well</p>
+                            <!-- Car Details -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
+                                </div>
+                                <div class="col-md-6 d-flex flex-column justify-content-center">
+                                    <h5 class="fw-semibold">@Model.Car?.Brand @Model.Car?.Model (@Model.Car?.Year)</h5>
+                                    <p><strong>Plate Number:</strong> @Model.Car?.CarID</p>
+                                    <p><strong>Price per Hour:</strong> @Model.Car?.DailyRate.ToString("C")</p>
+                                    <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
+                                    <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
+                                    <p><strong>Seats:</strong> @Model.Car?.Seats</p>
+                                </div>
                             </div>
-                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-                                <p style="margin: 0; font-weight: bold;">Child seat</p>
-                                <p style="margin: 0;">US$29.61 each per rental</p>
-                                <p style="margin: 0; font-size: 12px;">For small children: 9–18 kg / 20–40 lbs (about 1–3 years old)</p>
+
+
+                            <!-- Great Choice Section -->
+                            <div style="border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
+                                <h2 style="font-weight: bold;">Great choice!</h2>
+                                <ul style="list-style: none; padding-left: 0;">
+                                    <li style="margin-bottom: 5px;">✅ Customer rating: 8.5 / 10</li>
+                                    <li style="margin-bottom: 5px;">✅ Rental counter in terminal</li>
+                                    <li style="margin-bottom: 5px;">✅ Short queues</li>
+                                    <li style="margin-bottom: 5px;">✅ Most popular company here</li>
+                                    <li style="margin-bottom: 5px;">✅ Most popular fuel policy</li>
+                                    <li style="margin-bottom: 5px;">✅ Easy to find counter</li>
+                                </ul>
+                                <img src="your_image_url_here" alt="Keys with checkmark" style="float: right; width: 80px; margin-top: -100px;">
+                            </div>
+
+                            <!-- Customer Feedback -->
+                            <div style="border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
+                                <h2 style="font-weight: bold;">What travellers say about Budget</h2>
+                                <p>Here's what customers mentioned most often in genuine reviews for Budget at Queen Alia International Airport.</p>
+                                <button style="background-color: #fff; border: 1px solid green; color: green; padding: 5px 10px; border-radius: 5px; margin-right: 10px;">😊 Staff service</button>
+                                <button style="background-color: #fff; border: 1px solid green; color: green; padding: 5px 10px; border-radius: 5px;">😊 Pick-up speed</button>
+                            </div>
+
+                            <!-- Included in the price -->
+                            <div style="border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
+                                <h2 style="font-weight: bold;">Included in the price</h2>
+                                <ul style="list-style: none; padding-left: 0;">
+                                    <li style="margin-bottom: 5px;">✅ Collision Damage Waiver with US$493 excess</li>
+                                    <li style="margin-bottom: 5px;">✅ Theft Protection with US$493 excess</li>
+                                    <li style="margin-bottom: 5px;">✅ Unlimited mileage</li>
+                                </ul>
+                            </div>
+
+                            <!-- Extras -->
+                            <div style="border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px;">
+                                <h2 style="font-weight: bold;">Add extras, complete your trip</h2>
+                                <div style="display: flex; gap: 20px;">
+                                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                                        <p style="margin: 0; font-weight: bold;">Additional driver</p>
+                                        <p style="margin: 0;">US$21.15 each per rental</p>
+                                        <p style="margin: 0; font-size: 12px;">If you want other people to drive as well</p>
+                                    </div>
+                                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                                        <p style="margin: 0; font-weight: bold;">Child seat</p>
+                                        <p style="margin: 0;">US$29.61 each per rental</p>
+                                        <p style="margin: 0; font-size: 12px;">For small children: 9–18 kg / 20–40 lbs (about 1–3 years old)</p>
+                                    </div>
+                                </div>
+                                <p style="font-size: 12px; margin-top: 10px;">We'll request your extras with Budget and you'll pay for them at pick-up. Pricing and availability can't be guaranteed until you arrive.</p>
+                            </div>
+
+                            <!-- Pick-up Checklist -->
+                            <div>
+                                <h2 style="font-weight: bold;">Your pick-up checklist</h2>
+                                <div style="border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
+                                    <div style="margin-bottom: 10px;">
+                                        <strong>🕘 Arrive on time</strong>
+                                        <p style="margin: 5px 0;">Rental companies only allow you to get your keys at your allocated pick-up time, they'll usually hold your car for a limited time after you're due to pick it up – then it's likely to be passed to another customer.</p>
+                                        <p><strong>Your pick-up time is 10:00 AM</strong></p>
+                                    </div>
+                                </div>
+                                <p style="font-size: 12px;">This isn't the full list, check the <a href="#" style="color: blue;">rental terms</a> for everything you need.</p>
                             </div>
                         </div>
-                        <p style="font-size: 12px; margin-top: 10px;">We'll request your extras with Budget and you'll pay for them at pick-up. Pricing and availability can't be guaranteed until you arrive.</p>
+
+
+                    </div>
+                    <div id="panel2" class="panel">
+
+                        <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
+                                </div>
+                                <div class="col-md-6 d-flex flex-column justify-content-center">
+                                    <h5 class="fw-semibold">@Model.Car?.Brand @Model.Car?.Model (@Model.Car?.Year)</h5>
+                                    <p><strong>Plate Number:</strong> @Model.Car?.CarID</p>
+                                    <p><strong>Price per Hour:</strong> @Model.Car?.DailyRate.ToString("C")</p>
+                                    <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
+                                    <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
+                                    <p><strong>Seats:</strong> @Model.Car?.Seats</p>
+                                </div>
+                            </div>
+    
+<div class="container">
+    <div class="header">
+        <h1>Queen Alia International Airport</h1>
+        <div class="details">
+            <p>Thu 10 Apr 2025, 10:00</p>
+            <p>Sun 13 Apr 2025, 10:00</p>
+            <a href="#">Edit</a>
+        </div>
+    </div>
+    <div class="protection-options">
+        <p class="options-header">Protection options</p>
+        <p>Protection... for peace of mind</p>
+        <p><strong>FREE cancellation:</strong> Full refund if you cancel within your credit card.</p>
+        <p class="note">At the counter, the car hire company will hold a deposit amount on your credit card. You could lose your whole deposit if the car is damaged or stolen, but as long as you have our Full Protection, Rentalcover.com will refund you!</p>
+        <p>Terms & Conditions apply for all peace of mind.</p>
+    </div>
+</div>
+
+<div class="container">
+    <p class="options-header">What's covered</p>
+    <table class="protection-table">
+        <thead>
+            <tr>
+                <th>Basic protection</th>
+                <th>Full Protection</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Theft of car</td>
+                <td>You pay US$493 (your excess) <span class="refund">✔️</span></td>
+            </tr>
+            <tr>
+                <td>Bodywork damage</td>
+                <td>You pay US$0 <span class="refund">✔️</span></td>
+            </tr>
+            <tr>
+                <td>Any other damage</td>
+                <td>You pay the full cost <span class="no-refund">❌</span></td>
+            </tr>
+            <tr>
+                <td>Any other charges</td>
+                <td>Charges for towing, lost keys, rental reduction, etc.<br> You pay the full cost <span class="no-refund">❌</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="total-cost">
+        <p>Total cost: US$60.06</p>
+    </div>
+    <div class="fast-reliable">
+        <p><strong>Fast and reliable</strong></p>
+        <p>Over 97% of claims paid out</p>
+        <p>Car price breakdown</p>
+        <p>Car hire charge: US$58.49</p>
+        <p>Car price for 3 days: US$60.06</p>
+        <p>This car is costing you just US$58.49 - a real bargain...<br> In case you decide not to pick up your car at Queen Alia International Airport.</p>
+    </div>
+</div>
+                    </div>
+                    <div id="panel3" class="panel">
+                         <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
+                                </div>
+                                <div class="col-md-6 d-flex flex-column justify-content-center">
+                                    <h5 class="fw-semibold">@Model.Car?.Brand @Model.Car?.Model (@Model.Car?.Year)</h5>
+                                    <p><strong>Plate Number:</strong> @Model.Car?.CarID</p>
+                                    <p><strong>Price per Hour:</strong> @Model.Car?.DailyRate.ToString("C")</p>
+                                    <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
+                                    <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
+                                    <p><strong>Seats:</strong> @Model.Car?.Seats</p>
+                                </div>
+                            </div>
+                        <form asp-action="ConfirmRental" asp-controller="Booking" method="get" class="needs-validation" novalidate>
+                            <div class="row">
+                                <input type="hidden" name="carID" value="@Model.Car?.CarID" />
+
+                                <!-- Main Driver's Details -->
+                                <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
+                                    <h5 class="fw-bold text-black">Main Driver's Details</h5>
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="Email" name="Email" required>
+                                        <label for="Email">Email Address</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="FirstName" name="FirstName" required>
+                                            <label for="FirstName">First Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="SecondName" name="SecondName" required>
+                                            <label for="SecondName">Second Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="ThirdName" name="ThirdName" required>
+                                            <label for="ThirdName">Third Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="LastName" name="LastName" required>
+                                            <label for="LastName">Last Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="CountryCode" name="CountryCode" required>
+                                                <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
+                                                <option value="+1">🇺🇸 +1 (USA)</option>
+                                                <option value="+44">🇬🇧 +44 (UK)</option>
+                                            </select>
+                                            <label for="CountryCode">Country Code</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber"
+                                                   pattern="^\d{7,15}$" required
+                                                   placeholder="e.g. 786634288"
+                                                   title="Enter your number without the country code. Only digits (7 to 15).">
+                                            <div class="invalid-feedback">
+                                                Please enter a valid phone number with 7 to 15 digits (no country code).
+                                            </div>
+                                            <label for="PhoneNumber">Contact Number</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Flight Details -->
+                                <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
+                                    <h5 class="fw-bold text-black">Add Your Flight Details</h5>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="FlightName" name="FlightName" required>
+                                            <label for="FlightName">Flight Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="FlightNumber" name="FlightNumber" required>
+                                            <label for="FlightNumber">Flight Number</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Billing Address -->
+                                <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
+                                    <h5 class="fw-bold text-black">Billing Address</h5>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="BillingFirstName" name="BillingFirstName" required>
+                                            <label for="BillingFirstName">First Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="BillingLastName" name="BillingLastName" required>
+                                            <label for="BillingLastName">Last Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="BillingCountryCode" name="BillingCountryCode" required>
+                                                <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
+                                                <option value="+1">🇺🇸 +1 (USA)</option>
+                                                <option value="+44">🇬🇧 +44 (UK)</option>
+                                            </select>
+                                            <label for="BillingCountryCode">Country Code</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="Address" name="Address" required>
+                                            <label for="Address">Address</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="City" name="City" required>
+                                            <label for="City">City</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="PostCode" name="PostCode" required>
+                                            <label for="PostCode">Postcode</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Information -->
+                                <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
+                                    <h5 class="fw-bold text-black">How Would You Like to Pay?</h5>
+                                    <div class="d-flex mb-3">
+                                        <img src="~/images/visa.png" alt="Visa" class="me-2" style="width: 40px; height: auto;">
+                                        <img src="~/images/mastercard.png" alt="MasterCard" class="me-2" style="width: 40px; height: auto;">
+                                        <img src="~/images/amex.png" alt="American Express" class="me-2" style="width: 40px; height: auto;">
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="CardholdersName" name="CardholdersName" required>
+                                        <label for="CardholdersName">Cardholder's Name</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="CardholdersNumber" name="CardholdersNumber" required>
+                                        <label for="CardholdersNumber">Card Number</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="ExpiryDate" name="ExpiryDate" placeholder="MM/YY" required>
+                                                <label for="ExpiryDate">Expiry Date</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="CVC" name="CVC" required>
+                                                <label for="CVC">CVC</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit -->
+                                <div class="col-12 text-center">
+                                    @if (Model.Status == "Confirmed")
+                                    {
+                                        <button type="button" class="btn btn-secondary btn-lg px-5" disabled>Car Already Booked</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary btn-lg px-5">Rent Car</button>
+                                    }
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
 
-                    <!-- Pick-up Checklist -->
-                    <div>
-                        <h2 style="font-weight: bold;">Your pick-up checklist</h2>
-                        <div style="border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
-                            <div style="margin-bottom: 10px;">
-                                <strong>🕘 Arrive on time</strong>
-                                <p style="margin: 5px 0;">Rental companies only allow you to get your keys at your allocated pick-up time, they'll usually hold your car for a limited time after you're due to pick it up – then it's likely to be passed to another customer.</p>
-                                <p><strong>Your pick-up time is 10:00 AM</strong></p>
-                            </div>
-                        </div>
-                        <p style="font-size: 12px;">This isn't the full list, check the <a href="#" style="color: blue;">rental terms</a> for everything you need.</p>
-                    </div>
+                    <button id="nextBtn" class="btn">Next</button>
+
 
 
 
                     <!-- Booking Form -->
-                    <form asp-action="ConfirmRental" asp-controller="Booking" method="get" class="needs-validation" novalidate>
-                        <div class="row">
-                            <input type="hidden" name="carID" value="@Model.Car?.CarID" />
-
-                            <!-- Main Driver's Details -->
-                            <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
-                                <h5 class="fw-bold text-black">Main Driver's Details</h5>
-                                <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="Email" name="Email" required>
-                                    <label for="Email">Email Address</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="FirstName" name="FirstName" required>
-                                        <label for="FirstName">First Name</label>
-                                    </div>
-                                </div>
-                                 <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="SecondName" name="SecondName" required>
-                                        <label for="SecondName">Second Name</label>
-                                    </div>
-                                </div> 
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="ThirdName" name="ThirdName" required>
-                                        <label for="ThirdName">Third Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="LastName" name="LastName" required>
-                                        <label for="LastName">Last Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="CountryCode" name="CountryCode" required>
-                                            <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
-                                            <option value="+1">🇺🇸 +1 (USA)</option>
-                                            <option value="+44">🇬🇧 +44 (UK)</option>
-                                        </select>
-                                        <label for="CountryCode">Country Code</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber"
-                                               pattern="^\d{7,15}$" required
-                                               placeholder="e.g. 786634288"
-                                               title="Enter your number without the country code. Only digits (7 to 15).">
-                                        <div class="invalid-feedback">
-                                            Please enter a valid phone number with 7 to 15 digits (no country code).
-                                        </div>
-                                        <label for="PhoneNumber">Contact Number</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Flight Details -->
-                            <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
-                                <h5 class="fw-bold text-black">Add Your Flight Details</h5>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="FlightName" name="FlightName" required>
-                                        <label for="FlightName">Flight Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="FlightNumber" name="FlightNumber" required>
-                                        <label for="FlightNumber">Flight Number</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Billing Address -->
-                            <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
-                                <h5 class="fw-bold text-black">Billing Address</h5>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="BillingFirstName" name="BillingFirstName" required>
-                                        <label for="BillingFirstName">First Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="BillingLastName" name="BillingLastName" required>
-                                        <label for="BillingLastName">Last Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="BillingCountryCode" name="BillingCountryCode" required>
-                                            <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
-                                            <option value="+1">🇺🇸 +1 (USA)</option>
-                                            <option value="+44">🇬🇧 +44 (UK)</option>
-                                        </select>
-                                        <label for="BillingCountryCode">Country Code</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="Address" name="Address" required>
-                                        <label for="Address">Address</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="City" name="City" required>
-                                        <label for="City">City</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="PostCode" name="PostCode" required>
-                                        <label for="PostCode">Postcode</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Payment Information -->
-                            <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
-                                <h5 class="fw-bold text-black">How Would You Like to Pay?</h5>
-                                <div class="d-flex mb-3">
-                                    <img src="~/images/visa.png" alt="Visa" class="me-2" style="width: 40px; height: auto;">
-                                    <img src="~/images/mastercard.png" alt="MasterCard" class="me-2" style="width: 40px; height: auto;">
-                                    <img src="~/images/amex.png" alt="American Express" class="me-2" style="width: 40px; height: auto;">
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="CardholdersName" name="CardholdersName" required>
-                                    <label for="CardholdersName">Cardholder's Name</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="CardholdersNumber" name="CardholdersNumber" required>
-                                    <label for="CardholdersNumber">Card Number</label>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="ExpiryDate" name="ExpiryDate" placeholder="MM/YY" required>
-                                            <label for="ExpiryDate">Expiry Date</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="CVC" name="CVC" required>
-                                            <label for="CVC">CVC</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Submit -->
-                            <div class="col-12 text-center">
-                                @if (Model.Status == "Confirmed")
-                                {
-                                    <button type="button" class="btn btn-secondary btn-lg px-5" disabled>Car Already Booked</button>
-                                }
-                                else
-                                {
-                                    <button type="submit" class="btn btn-primary btn-lg px-5">Rent Car</button>
-                                }
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -285,6 +481,24 @@
 
 <!-- JavaScript -->
 <script>
+    let currentPanel = 1;
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    // Hide current panel
+    document.getElementById(`panel${currentPanel}`).classList.remove('active');
+    currentPanel++;
+
+    // Show next panel
+    if (currentPanel <= 4) {
+      document.getElementById(`panel${currentPanel}`).classList.add('active');
+    }
+
+    // Disable button at the end
+  if (currentPanel === 3) { 
+      document.getElementById('nextBtn').classList.add('hidden');
+    }
+  });
+
     (() => {
         'use strict';
 
