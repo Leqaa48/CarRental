@@ -273,7 +273,7 @@
 </div>
                     </div>
                     <div id="panel3" class="panel">
-                         <div class="row mb-4">
+                      <div class="row mb-4">
                                 <div class="col-md-6">
                                     <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
                                 </div>
@@ -288,6 +288,7 @@
                             </div>
                         <form asp-action="ConfirmRental" asp-controller="Booking" method="get" class="needs-validation" novalidate>
                             <div class="row">
+
                                 <input type="hidden" name="carID" value="@Model.Car?.CarID" />
 
                                 <!-- Main Driver's Details -->
@@ -481,23 +482,27 @@
 
 <!-- JavaScript -->
 <script>
+
     let currentPanel = 1;
 
-  document.getElementById('nextBtn').addEventListener('click', () => {
-    // Hide current panel
-    document.getElementById(`panel${currentPanel}`).classList.remove('active');
-    currentPanel++;
+    document.getElementById('nextBtn').addEventListener('click', () => {
+        // Hide current panel
+        document.getElementById(`panel${currentPanel}`).classList.remove('active');
+        currentPanel++;
 
-    // Show next panel
-    if (currentPanel <= 4) {
-      document.getElementById(`panel${currentPanel}`).classList.add('active');
-    }
+        // Show next panel
+        if (currentPanel <= 4) {
+            document.getElementById(`panel${currentPanel}`).classList.add('active');
+        }
 
-    // Disable button at the end
-  if (currentPanel === 3) { 
-      document.getElementById('nextBtn').classList.add('hidden');
-    }
-  });
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Disable button at the end
+        if (currentPanel === 3) {
+            document.getElementById('nextBtn').classList.add('hidden');
+        }
+    });
 
     (() => {
         'use strict';
@@ -539,4 +544,5 @@
         document.getElementById("StartDate").addEventListener("change", calculateTotalPrice);
         document.getElementById("EndDate").addEventListener("change", calculateTotalPrice);
     })();
+
 </script>
