@@ -42,6 +42,14 @@ namespace CarRental.Models
 
         public string? Image { get; set; }
 
+
+        [NotMapped]
+
+        public IFormFile? CompanyLogoFile { get; set; }
+
+        public string? CompanyLogo { get; set; }
+
+
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
     }

@@ -20,49 +20,49 @@
                         <div class="col-12">
                             <div class="add__listing--input__box mb-20">
                                 <label class="add__listing--input__label" for="Brand">Brand</label>
-                                <input class="add__listing--input__field" id="Brand" name="Brand" asp-for="Brand" type="text" />
+                                <input class="add__listing--input__field" id="Brand" asp-for="Brand" type="text" />
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="add__listing--input__box mb-20">
                                 <label class="add__listing--input__label" for="Model">Model</label>
-                                <input class="add__listing--input__field" id="Model" name="Model" asp-for="Model" type="text" />
+                                <input class="add__listing--input__field" id="Model" asp-for="Model" type="text" />
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="add__listing--input__box mb-20">
                                 <label class="add__listing--input__label" for="Year">Year</label>
-                                <input class="add__listing--input__field" id="Year" name="Year" asp-for="Year" type="number" min="1900" max="2025" />
+                                <input class="add__listing--input__field" id="Year" asp-for="Year" type="number" min="1900" max="2025" />
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="add__listing--input__box mb-20">
                                 <label class="add__listing--input__label" for="Seats">Seats</label>
-                                <input class="add__listing--input__field" id="Seats" name="Seats" asp-for="Seats" type="number" min="1" max="10" />
+                                <input class="add__listing--input__field" id="Seats" asp-for="Seats" type="number" min="1" max="10" />
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="add__listing--input__box mb-20">
                                 <label class="add__listing--input__label" for="FuelType">Fuel Type</label>
-                                <select class="add__listing--form__select" id="FuelType" name="FuelType" asp-for="FuelType" asp-items="@ViewBag.FuelTypeList"></select>
+                                <select class="add__listing--form__select" id="FuelType" asp-for="FuelType" asp-items="@ViewBag.FuelTypeList"></select>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="add__listing--input__box mb-20">
                                 <label class="add__listing--input__label" for="Transmission">Transmission</label>
-                                <select class="add__listing--form__select" id="Transmission" name="Transmission" asp-for="Transmission" asp-items="@ViewBag.TransmissionList"></select>
+                                <select class="add__listing--form__select" id="Transmission" asp-for="Transmission" asp-items="@ViewBag.TransmissionList"></select>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="add__listing--input__box mb-20">
                                 <label class="add__listing--input__label" for="DailyRate">Daily Rate</label>
-                                <input class="add__listing--input__field" id="DailyRate" name="DailyRate" asp-for="DailyRate" type="number" step="0.01" min="1" />
+                                <input class="add__listing--input__field" id="DailyRate" asp-for="DailyRate" type="number" step="0.01" min="1" />
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="add__listing--input__box mb-20">
                                 <label class="add__listing--input__label" for="Status">Status</label>
-                                <select class="add__listing--form__select" id="Status" name="Status" asp-for="Status" asp-items="@ViewBag.StatusList"></select>
+                                <select class="add__listing--form__select" id="Status" asp-for="Status" asp-items="@ViewBag.StatusList"></select>
                             </div>
                         </div>
                         <div class="col-12">
@@ -70,9 +70,19 @@
                                 <label class="add__listing--input__label">Upload Car Image</label>
                                 <label class="btn btn-primary btn-md btn-file" style="cursor: pointer;">
                                     Car Image
-                                    <input type="file" id="ImageFile" name="ImageFile" hidden onchange="showFileName(this)">
+                                    <input type="file" id="ImageFile" asp-for="ImageFile" hidden onchange="showFileName(this, 'carImageFileName')">
                                 </label>
-                                <span id="file-name" class="ml-2 text-muted"></span>
+                                <span id="carImageFileName" class="ml-2 text-muted"></span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label">Company Logo</label>
+                                <label class="btn btn-primary btn-md btn-file" style="cursor: pointer;">
+                                    Company Logo
+                                    <input type="file" id="CompanyLogoFile" asp-for="CompanyLogo" hidden onchange="showFileName(this, 'companyLogoFileName')">
+                                </label>
+                                <span id="companyLogoFileName" class="ml-2 text-muted"></span>
                             </div>
                         </div>
                     </div>
@@ -87,8 +97,8 @@
 </main>
 
 <script>
-    function showFileName(input) {
+    function showFileName(input, displayElementId) {
         const fileName = input.files[0]?.name || "No file chosen";
-        document.getElementById('file-name').innerText = fileName;
+        document.getElementById(displayElementId).innerText = fileName;
     }
 </script>

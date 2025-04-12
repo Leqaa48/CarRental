@@ -273,75 +273,85 @@
 </div>
                     </div>
                     <div id="panel3" class="panel">
-                      <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
-                                </div>
-                                <div class="col-md-6 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-semibold">@Model.Car?.Brand @Model.Car?.Model (@Model.Car?.Year)</h5>
-                                    <p><strong>Plate Number:</strong> @Model.Car?.CarID</p>
-                                    <p><strong>Price per Hour:</strong> @Model.Car?.DailyRate.ToString("C")</p>
-                                    <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
-                                    <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
-                                    <p><strong>Seats:</strong> @Model.Car?.Seats</p>
-                                </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
                             </div>
+                            <div class="col-md-6 d-flex flex-column justify-content-center">
+                                <h5 class="fw-semibold">@Model.Car?.Brand @Model.Car?.Model (@Model.Car?.Year)</h5>
+                                <p><strong>Plate Number:</strong> @Model.Car?.CarID</p>
+                                <p><strong>Price per Hour:</strong> @Model.Car?.DailyRate.ToString("C")</p>
+                                <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
+                                <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
+                                <p><strong>Seats:</strong> @Model.Car?.Seats</p>
+                            </div>
+                        </div>
                         <form asp-action="ConfirmRental" asp-controller="Booking" method="get" class="needs-validation" novalidate>
                             <div class="row">
-
                                 <input type="hidden" name="carID" value="@Model.Car?.CarID" />
-
+                                <div class="col-12 mb-3">
+                                    <label for="personSelect" class="form-label">Select a person to auto-fill:</label>
+                                    <select class="form-select" id="personSelect">
+                                        <option value="">-- Select a person --</option>
+                                        <option value="ahmad">Ahmad</option>
+                                        <option value="ali">Ali</option>
+                                        <option value="mohammed">Mohammed</option>
+                                        <option value="business">Business Traveler</option>
+                                    </select>
+                                </div>
                                 <!-- Main Driver's Details -->
                                 <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
                                     <h5 class="fw-bold text-black">Main Driver's Details</h5>
                                     <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" id="Email" name="Email" required>
+                                        <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required>
                                         <label for="Email">Email Address</label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="FirstName" name="FirstName" required>
-                                            <label for="FirstName">First Name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="SecondName" name="SecondName" required>
-                                            <label for="SecondName">Second Name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="ThirdName" name="ThirdName" required>
-                                            <label for="ThirdName">Third Name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="LastName" name="LastName" required>
-                                            <label for="LastName">Last Name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <select class="form-select" id="CountryCode" name="CountryCode" required>
-                                                <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
-                                                <option value="+1">🇺🇸 +1 (USA)</option>
-                                                <option value="+44">🇬🇧 +44 (UK)</option>
-                                            </select>
-                                            <label for="CountryCode">Country Code</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber"
-                                                   pattern="^\d{7,15}$" required
-                                                   placeholder="e.g. 786634288"
-                                                   title="Enter your number without the country code. Only digits (7 to 15).">
-                                            <div class="invalid-feedback">
-                                                Please enter a valid phone number with 7 to 15 digits (no country code).
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="FirstName" name="FirstName" value="@Model.FirstName" required>
+                                                <label for="FirstName">First Name</label>
                                             </div>
-                                            <label for="PhoneNumber">Contact Number</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="SecondName" name="SecondName" value="@Model.SecondName" required>
+                                                <label for="SecondName">Second Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="ThirdName" name="ThirdName" value="@Model.ThirdName" required>
+                                                <label for="ThirdName">Third Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="LastName" name="LastName" value="@Model.LastName" required>
+                                                <label for="LastName">Last Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <select class="form-select" id="CountryCode" name="CountryCode" required>
+                                                    <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
+                                                    <option value="+1">🇺🇸 +1 (USA)</option>
+                                                    <option value="+44">🇬🇧 +44 (UK)</option>
+                                                </select>
+                                                <label for="CountryCode">Country Code</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber"
+                                                       pattern="^\d{7,15}$" required
+                                                       placeholder="e.g. 786634288"
+                                                       title="Enter your number without the country code. Only digits (7 to 15).">
+                                                <div class="invalid-feedback">
+                                                    Please enter a valid phone number with 7 to 15 digits (no country code).
+                                                </div>
+                                                <label for="PhoneNumber">Contact Number</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -349,16 +359,18 @@
                                 <!-- Flight Details -->
                                 <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
                                     <h5 class="fw-bold text-black">Add Your Flight Details</h5>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="FlightName" name="FlightName" required>
-                                            <label for="FlightName">Flight Name</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="FlightName" name="FlightName" value="@Model.FlightName" required>
+                                                <label for="FlightName">Flight Name</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="FlightNumber" name="FlightNumber" required>
-                                            <label for="FlightNumber">Flight Number</label>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="FlightNumber" name="FlightNumber" value="@Model.FlightNumber" required>
+                                                <label for="FlightNumber">Flight Number</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -366,44 +378,46 @@
                                 <!-- Billing Address -->
                                 <div class="col-12 mb-4" style="border: 1px solid #000; padding: 15px; border-radius: 5px;">
                                     <h5 class="fw-bold text-black">Billing Address</h5>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="BillingFirstName" name="BillingFirstName" required>
-                                            <label for="BillingFirstName">First Name</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="BillingFirstName" name="BillingFirstName" value="@Model.FirstName" required>
+                                                <label for="BillingFirstName">First Name</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="BillingLastName" name="BillingLastName" required>
-                                            <label for="BillingLastName">Last Name</label>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="BillingLastName" name="BillingLastName" value="@Model.LastName" required>
+                                                <label for="BillingLastName">Last Name</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <select class="form-select" id="BillingCountryCode" name="BillingCountryCode" required>
-                                                <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
-                                                <option value="+1">🇺🇸 +1 (USA)</option>
-                                                <option value="+44">🇬🇧 +44 (UK)</option>
-                                            </select>
-                                            <label for="BillingCountryCode">Country Code</label>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <select class="form-select" id="BillingCountryCode" name="BillingCountryCode" required>
+                                                    <option value="+962" selected>🇯🇴 +962 (Jordan)</option>
+                                                    <option value="+1">🇺🇸 +1 (USA)</option>
+                                                    <option value="+44">🇬🇧 +44 (UK)</option>
+                                                </select>
+                                                <label for="BillingCountryCode">Country Code</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="Address" name="Address" required>
-                                            <label for="Address">Address</label>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="Address" name="Address" value="@Model.Address" required>
+                                                <label for="Address">Address</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="City" name="City" required>
-                                            <label for="City">City</label>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="City" name="City" value="@Model.City" required>
+                                                <label for="City">City</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="PostCode" name="PostCode" required>
-                                            <label for="PostCode">Postcode</label>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="PostCode" value="@Model.PostCode" name="PostCode" required>
+                                                <label for="PostCode">Postcode</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -418,29 +432,29 @@
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="CardholdersName" name="CardholdersName" required>
+                                        <input type="text" class="form-control" id="CardholdersName" name="CardholdersName" value="@Model.CardholdersName" required>
                                         <label for="CardholdersName">Cardholder's Name</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="CardholdersNumber" name="CardholdersNumber" required>
+                                        <input type="text" class="form-control" id="CardholdersNumber" name="CardholdersNumber" value="@Model.CardholdersNumber" required>
                                         <label for="CardholdersNumber">Card Number</label>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <div class="form-floating">
-                                                <input type="text" class="form-control" id="ExpiryDate" name="ExpiryDate" placeholder="MM/YY" required>
+                                                <input type="text" class="form-control" id="ExpiryDate" name="ExpiryDate" value="@Model.ExpiryDate" placeholder="MM/YY" required>
                                                 <label for="ExpiryDate">Expiry Date</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <div class="form-floating">
-                                                <input type="text" class="form-control" id="CVC" name="CVC" required>
+                                                <input type="text" class="form-control" id="CVC" name="CVC" value="@Model.CVC" required>
                                                 <label for="CVC">CVC</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+                                <input type="hidden" value="@ViewData["BookingID"]" name="BookingID" id="BookingID" />
                                 <!-- Submit -->
                                 <div class="col-12 text-center">
                                     @if (Model.Status == "Confirmed")
@@ -454,10 +468,115 @@
                                 </div>
                             </div>
                         </form>
+                    </div>                    <style>
+                        .card {
+                            margin-bottom: 1rem;
+                            border: 1px solid #dee2e6;
+                            border-radius: 0.375rem;
+                        }
 
-                    </div>
+                        .card-header {
+                            padding: 0.75rem 1.25rem;
+                            background-color: #f8f9fa;
+                            border-bottom: 1px solid #dee2e6;
+                        }
 
-                    <button id="nextBtn" class="btn">Next</button>
+                        .form-floating {
+                            margin-bottom: 1rem;
+                        }
+
+                        .sticky-top {
+                            position: -webkit-sticky;
+                            position: sticky;
+                        }
+                    </style>
+
+                    <script>
+                        // Original auto-fill functionality remains unchanged
+                        document.getElementById('personSelect').addEventListener('change', function () {
+                            // Your original auto-fill logic here
+                        });
+                    </script>
+                    <style>
+                        .form-control-sm, .form-select-sm {
+                            font-size: 0.875rem;
+                            padding: 0.25rem 0.5rem;
+                        }
+
+                        .card {
+                            border-radius: 0.5rem;
+                            margin-bottom: 1rem;
+                        }
+
+                        .card-header {
+                            font-size: 0.875rem;
+                        }
+
+                        .sticky-top {
+                            position: -webkit-sticky;
+                            position: sticky;
+                        }
+
+                        .input-group-sm > .form-select {
+                            width: auto;
+                        }
+
+                        .fa {
+                            font-size: 0.8rem;
+                        }
+                    </style>
+                    <style>
+                        .form-control-sm, .form-select-sm {
+                            font-size: 0.875rem;
+                            padding: 0.25rem 0.5rem;
+                        }
+
+                        .card {
+                            border-radius: 0.5rem;
+                        }
+
+                        .card-header {
+                            font-size: 0.875rem;
+                        }
+
+                        .sticky-top {
+                            position: -webkit-sticky;
+                            position: sticky;
+                        }
+
+                        .input-group-sm > .form-select {
+                            width: auto;
+                        }
+                    </style>
+                    <style>
+                        .card {
+                            margin-bottom: 1rem;
+                            border: 1px solid #dee2e6;
+                            border-radius: 0.375rem;
+                        }
+
+                        .card-header {
+                            padding: 0.75rem 1.25rem;
+                            background-color: #f8f9fa;
+                            border-bottom: 1px solid #dee2e6;
+                        }
+
+                        .form-floating {
+                            margin-bottom: 1rem;
+                        }
+
+                        .sticky-top {
+                            position: -webkit-sticky;
+                            position: sticky;
+                        }
+                    </style>
+
+                    <script>
+                        // Optional: Add JavaScript for person select auto-fill functionality
+                        document.getElementById('personSelect').addEventListener('change', function () {
+                            // Add your auto-fill logic here
+                        });
+                    </script>                    <button id="nextBtn" class="btn">Next</button>
 
 
 
@@ -482,7 +601,112 @@
 
 <!-- JavaScript -->
 <script>
+    // Auto-fill functionality for persons
+    document.getElementById('personSelect')?.addEventListener('change', function () {
+        const selectedPerson = this.value;
 
+        // Reset all fields first
+        document.getElementById('FirstName').value = '';
+        document.getElementById('SecondName').value = '';
+        document.getElementById('ThirdName').value = '';
+        document.getElementById('LastName').value = '';
+        document.getElementById('Email').value = '';
+        document.getElementById('PhoneNumber').value = '';
+        document.getElementById('BillingFirstName').value = '';
+        document.getElementById('BillingLastName').value = '';
+        document.getElementById('Address').value = '';
+        document.getElementById('City').value = '';
+        document.getElementById('PostCode').value = '';
+        document.getElementById('FlightName').value = '';
+        document.getElementById('FlightNumber').value = '';
+        document.getElementById('CardholdersName').value = '';
+        document.getElementById('CardholdersNumber').value = '';
+        document.getElementById('ExpiryDate').value = '';
+        document.getElementById('CVC').value = '';
+
+        // Fill based on selected person
+        if (selectedPerson === 'ahmad') {
+            // Personal Info
+            document.getElementById('FirstName').value = 'Ahmad';
+            document.getElementById('SecondName').value = 'Mohammed';
+            document.getElementById('ThirdName').value = 'Ali';
+            document.getElementById('LastName').value = 'Al-Hassan';
+            document.getElementById('Email').value = 'ahmadsamen23@gmail.com';
+            document.getElementById('PhoneNumber').value = '786634288';
+
+            // Billing Info
+            document.getElementById('BillingFirstName').value = 'Ahmad';
+            document.getElementById('BillingLastName').value = 'Al-Hassan';
+            document.getElementById('BillingCountryCode').value = '+962';
+            document.getElementById('Address').value = '123 King Abdullah St';
+            document.getElementById('City').value = 'Amman';
+            document.getElementById('PostCode').value = '11910';
+
+            // Flight Info
+            document.getElementById('FlightName').value = 'Royal Jordanian';
+            document.getElementById('FlightNumber').value = 'RJ112';
+
+            // Payment Info
+            document.getElementById('CardholdersName').value = 'Ahmad Al-Hassan';
+            document.getElementById('CardholdersNumber').value = '4111111111111111';
+            document.getElementById('ExpiryDate').value = '12/25';
+            document.getElementById('CVC').value = '123';
+        }
+        else if (selectedPerson === 'ali') {
+            // Personal Info
+            document.getElementById('FirstName').value = 'Ali';
+            document.getElementById('SecondName').value = 'Hassan';
+            document.getElementById('ThirdName').value = 'Omar';
+            document.getElementById('LastName').value = 'Al-Masri';
+            document.getElementById('Email').value = 'ahmadsamen23@gmail.com';
+            document.getElementById('PhoneNumber').value = '798765432';
+
+            // Billing Info
+            document.getElementById('BillingFirstName').value = 'Ali';
+            document.getElementById('BillingLastName').value = 'Al-Masri';
+            document.getElementById('BillingCountryCode').value = '+962';
+            document.getElementById('Address').value = '456 Queen Rania Ave';
+            document.getElementById('City').value = 'Amman';
+            document.getElementById('PostCode').value = '11190';
+
+            // Flight Info
+            document.getElementById('FlightName').value = 'Emirates';
+            document.getElementById('FlightNumber').value = 'EK902';
+
+            // Payment Info
+            document.getElementById('CardholdersName').value = 'Ali Al-Masri';
+            document.getElementById('CardholdersNumber').value = '5555555555554444';
+            document.getElementById('ExpiryDate').value = '06/24';
+            document.getElementById('CVC').value = '456';
+        }
+        else if (selectedPerson === 'mohammed') {
+            // Personal Info
+            document.getElementById('FirstName').value = 'Mohammed';
+            document.getElementById('SecondName').value = 'Ahmed';
+            document.getElementById('ThirdName').value = 'Yousef';
+            document.getElementById('LastName').value = 'Al-Fayed';
+            document.getElementById('Email').value = 'ahmadsamen23@gmail.com';
+            document.getElementById('PhoneNumber').value = '712345678';
+
+            // Billing Info
+            document.getElementById('BillingFirstName').value = 'Mohammed';
+            document.getElementById('BillingLastName').value = 'Al-Fayed';
+            document.getElementById('BillingCountryCode').value = '+962';
+            document.getElementById('Address').value = '789 Prince Hashem Blvd';
+            document.getElementById('City').value = 'Amman';
+            document.getElementById('PostCode').value = '11810';
+
+            // Flight Info
+            document.getElementById('FlightName').value = 'Qatar Airways';
+            document.getElementById('FlightNumber').value = 'QR402';
+
+            // Payment Info
+            document.getElementById('CardholdersName').value = 'Mohammed Al-Fayed';
+            document.getElementById('CardholdersNumber').value = '378282246310005';
+            document.getElementById('ExpiryDate').value = '09/26';
+            document.getElementById('CVC').value = '7890';
+        }
+    });
     let currentPanel = 1;
 
     document.getElementById('nextBtn').addEventListener('click', () => {

@@ -84,6 +84,11 @@ namespace CarRental.Areas.Dashboard.Controllers
                         var fileName = Path.GetFileName(car.ImageFile.FileName);
                         var filePath = Path.Combine(uploadsFolder, fileName);
 
+                 
+                
+
+
+
                         // Ensure the uploads folder exists
                         if (!Directory.Exists(uploadsFolder))
                         {
@@ -98,6 +103,7 @@ namespace CarRental.Areas.Dashboard.Controllers
 
                         // Save the image URL
                         car.Image = $"/carrentals-master/images/{fileName}";
+                        car.CompanyLogo = $"/carrentals-master/images/{fileName}";
 
                         // Save the car to the database
                         _context.Add(car);

@@ -79,6 +79,17 @@
                                 <span id="file-name" class="ml-2 text-muted"></span>
                             </div>
                         </div>
+
+                        <div class="col-12">
+                            <div class="add__listing--input__box mb-20">
+                                <label class="add__listing--input__label">Company Logo</label>
+                                <label class="btn btn-primary btn-md btn-file" style="cursor: pointer;">
+                                    Company Logo
+                                    <input type="file" id="CompanyLogo" name="CompanyLogo" hidden onchange="showFileName(this)">
+                                </label>
+                                <span id="file-name" class="ml-2 text-muted"></span>
+                            </div>
+                        </div>
                     </div>
                     <button class="solid__btn add__property--btn">Create</button>
                 </form>

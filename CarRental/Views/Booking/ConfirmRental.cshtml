@@ -9,7 +9,7 @@
         <div class="col-lg-8">
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-4">
-                    <h3 class="text-center mb-4 fw-bold">Booking Confirmation</h3>
+                    <h3 class="text-center mb-4 fw-bold"> <strong>@ViewBag.ConfirmationNo</strong>Confirm Booking Details</h3>
 
                     <!-- Display Success or Error Messages -->
                     @if (TempData["SuccessMessage"] != null)
@@ -72,6 +72,7 @@
                             <input type="hidden" name="ExpiryDate" value="@Model.ExpiryDate" />
                             <input type="hidden" name="CardholdersName" value="@Model.CardholdersName" />
                             <input type="hidden" name="CardholdersNumber" value="@Model.CardholdersNumber" />
+                            <input type="hidden" name="BookingID" value="@Model.BookingID" />
 
                             <button type="submit" class="btn btn-primary btn-lg flex-fill">Confirm</button>
                         </form>

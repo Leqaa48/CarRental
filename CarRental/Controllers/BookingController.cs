@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Channels;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.Controllers
 {
@@ -30,69 +32,98 @@ namespace CarRental.Controllers
                          .Replace("/", "")
                          .Substring(0, length);
         }
-        public IActionResult RentCar(string carId, DateTime? startDate, DateTime? endDate)
+        public IActionResult RentCar(string carId, DateTime? startDate = null, DateTime? endDate = null, int? BookingID = null)
         {
-            if (!startDate.HasValue)
+            if (BookingID == null)
             {
-                startDate = DateTime.Now;
+                if (!startDate.HasValue)
+                {
+                    startDate = DateTime.Now;
+                }
+
+                if (!endDate.HasValue)
+                {
+                    endDate = DateTime.Now.AddDays(1);
+                }
+
+                if (string.IsNullOrEmpty(carId) || !startDate.HasValue || !endDate.HasValue)
+                {
+                    return BadRequest("Invalid request parameters.");
+                }
+
+                var car = _context.Cars.FirstOrDefault(c => c.CarID == carId);
+
+                if (car == null)
+                {
+                    return NotFound();
+                }
+
+                bool isCarBooked = _context.Bookings.Any(b =>
+                    b.CarID == carId &&
+                    ((b.StartDate < endDate && b.EndDate > startDate))
+                );
+
+                if (isCarBooked)
+                {
+                    ViewData["ErrorMessage"] = "The car is already booked for this period. Please select a different date or choose another car.";
+                    return View();
+                }
+
+                double hoursDiff = (endDate.Value - startDate.Value).TotalHours;
+                double totalPrice = ((double)car.DailyRate) * hoursDiff;
+
+                var booking = new Booking
+                {
+                    Car = car,
+                    StartDate = startDate.Value,
+                    EndDate = endDate.Value,
+                    TotalPrice = (decimal)totalPrice
+                };
+
+                ViewData["StartDate"] = booking.StartDate.ToString("yyyy-MM-ddTHH:mm");
+                ViewData["EndDate"] = booking.EndDate.ToString("yyyy-MM-ddTHH:mm");
+                ViewData["TotalPrice"] = totalPrice.ToString("C");
+
+                return View(booking);
             }
-
-            if (!endDate.HasValue)
+            else
             {
-                endDate = DateTime.Now.AddDays(1);
+                //TempData["PickupLocation"] = pickupLocation;
+                //TempData["DropoffLocation"] = dropoffLocation;
+
+                ViewData["StartDate"] = TempData["StartDate"]?.ToString() ?? DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+                ViewData["EndDate"] = TempData["EndDate"]?.ToString() ?? DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+                ViewData["BookingID"] = BookingID;
+
+                if (string.IsNullOrEmpty(carId))
+                {
+                    return BadRequest("Invalid request parameters.");
+                }
+
+                var car = _context.Cars.FirstOrDefault(c => c.CarID == carId);
+
+                if (car == null)
+                {
+                    return NotFound();
+                }
+
+                var result = _context.Bookings.FirstOrDefault(b => b.BookingID == BookingID);
+                result.Car = car;
+
+                return View(result);
             }
-
-            if (string.IsNullOrEmpty(carId) || !startDate.HasValue || !endDate.HasValue)
-            {
-                return BadRequest("Invalid request parameters.");
-            }
-
-            var car = _context.Cars.FirstOrDefault(c => c.CarID == carId);
-
-            if (car == null)
-            {
-                return NotFound();
-            }
-
-            bool isCarBooked = _context.Bookings.Any(b =>
-                b.CarID == carId &&
-                ((b.StartDate < endDate && b.EndDate > startDate))
-            );
-
-            if (isCarBooked)
-            {
-                ViewData["ErrorMessage"] = "The car is already booked for this period. Please select a different date or choose another car.";
-                return View();
-            }
-
-            double hoursDiff = (endDate.Value - startDate.Value).TotalHours;
-            double totalPrice = ((double)car.DailyRate) * hoursDiff;
-
-            var booking = new Booking
-            {
-                Car = car,
-                StartDate = startDate.Value,
-                EndDate = endDate.Value,
-                TotalPrice = (decimal)totalPrice
-            };
-
-            ViewData["StartDate"] = booking.StartDate.ToString("yyyy-MM-ddTHH:mm");
-            ViewData["EndDate"] = booking.EndDate.ToString("yyyy-MM-ddTHH:mm");
-            ViewData["TotalPrice"] = totalPrice.ToString("C");
-
-            return View(booking);
         }
 
-        [HttpGet] 
-        public IActionResult ConfirmRental(string carID, 
+        [HttpGet]
+        public IActionResult ConfirmRental(string carID,
      string firstName, string secondName, string thirdName, string LastName,
      string email, string phoneNumber, string flightName, string flightNumber,
      string address, string city, string postCode, string cardholdersName,
-     string cardholdersNumber, string expiryDate, string cvc)
+     string cardholdersNumber, string expiryDate, string cvc, int? BookingID = null)
         {
             var car = _context.Cars.FirstOrDefault(c => c.CarID == carID);
-           DateTime startDate=Convert.ToDateTime(TempData["StartDate"]);
-           DateTime endDate=Convert.ToDateTime( TempData["EndDate"]);
+            DateTime startDate = Convert.ToDateTime(TempData["StartDate"]);
+            DateTime endDate = Convert.ToDateTime(TempData["EndDate"]);
             if (car == null)
             {
                 TempData["ErrorMessage"] = "Car not found.";
@@ -105,6 +136,7 @@ namespace CarRental.Controllers
 
             var booking = new Booking
             {
+                BookingID = BookingID ?? 0,
                 CarID = carID,
                 Car = car,
                 StartDate = startDate,
@@ -134,6 +166,9 @@ namespace CarRental.Controllers
         [HttpPost]
         public IActionResult ConfirmBooking(Booking booking)
         {
+            bool isSave = false;
+            string confirmationNo;
+
             if (ModelState.IsValid)
             {
                 if (string.IsNullOrEmpty(booking.Status))
@@ -141,55 +176,121 @@ namespace CarRental.Controllers
                     booking.Status = BookingStatus.Pending.ToString();
                 }
 
-                _context.Bookings.Add(booking);
-                _context.SaveChanges();
+                if (booking.BookingID != 0)
+                {
+                    TempData["booking"] = _context.Bookings.AsNoTracking().FirstOrDefault(b => b.BookingID == booking.BookingID);
+                    _context.Bookings.Update(booking);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    isSave = true;
+                    confirmationNo = Generate(10);
+                    TempData["ConfirmationNo"] = confirmationNo;
+                    _context.Bookings.Add(booking);
+                    _context.SaveChanges();
+                }
 
                 string filePath = Path.Combine(_env.WebRootPath, "emailTemplate.htm");
                 string emailTemplate = System.IO.File.ReadAllText(filePath);
 
+                string pickupLocation = TempData["PickupLocation"]?.ToString() ?? "Default Pickup Location";
+                string dropoffLocation = TempData["DropoffLocation"]?.ToString() ?? "Default Dropoff Location";
+                confirmationNo = TempData["ConfirmationNo"]?.ToString() ?? "No Confirmation";
+
                 string emailBody = emailTemplate
-                    .Replace("{{FirstName}}", booking.FirstName)
-                    .Replace("{{SecondName}}", booking.SecondName)
-                    .Replace("{{ThirdName}}", booking.ThirdName)
-                    .Replace("{{LastName}}", booking.LastName)
-                    .Replace("{{Email}}", booking.Email)
-                    .Replace("{{PhoneNumber}}", booking.PhoneNumber)
+                    .Replace("{{FirstName}}", booking.FirstName ?? "First Name")
+                    .Replace("{{SecondName}}", booking.SecondName ?? "Second Name")
+                    .Replace("{{ThirdName}}", booking.ThirdName ?? "Third Name")
+                    .Replace("{{LastName}}", booking.LastName ?? "Last Name")
+                    .Replace("{{Email}}", booking.Email ?? "No Email")
+                    .Replace("{{PhoneNumber}}", booking.PhoneNumber ?? "No Phone Number")
                     .Replace("{{BookingID}}", booking.BookingID.ToString())
-                    .Replace("{{CarID}}", booking.CarID)
+                    .Replace("{{CarID}}", booking.CarID ?? "Unknown Car")
                     .Replace("{{StartDate}}", booking.StartDate.ToString("yyyy-MM-dd HH:mm"))
                     .Replace("{{EndDate}}", booking.EndDate.ToString("yyyy-MM-dd HH:mm"))
                     .Replace("{{TotalPrice}}", booking.TotalPrice.ToString("C"))
-                    .Replace("{{FlightName}}", booking.FlightName)
-                    .Replace("{{FlightNumber}}", booking.FlightNumber)
-                    .Replace("{{Address}}", booking.Address)
-                    .Replace("{{City}}", booking.City)
-                    .Replace("{{PostCode}}", booking.PostCode)
-                    .Replace("{{CardholdersName}}", booking.CardholdersName)
-                    .Replace("{{CardholdersNumber}}", booking.CardholdersNumber)
-                    .Replace("{{ExpiryDate}}", booking.ExpiryDate)
-                    .Replace("{{CVC}}", booking.CVC)
-                    .Replace("{{PickupLocation}}", TempData["PickupLocation"].ToString())
-                    .Replace("{{DropoffLocation}}", TempData["DropoffLocation"].ToString())
+                    .Replace("{{FlightName}}", booking.FlightName ?? "No Flight Name")
+                    .Replace("{{FlightNumber}}", booking.FlightNumber ?? "No Flight Number")
+                    .Replace("{{Address}}", booking.Address ?? "No Address")
+                    .Replace("{{City}}", booking.City ?? "No City")
+                    .Replace("{{PostCode}}", booking.PostCode ?? "No Post Code")
+                    .Replace("{{CardholdersName}}", booking.CardholdersName ?? "No Cardholder Name")
+                    .Replace("{{CardholdersNumber}}", booking.CardholdersNumber ?? "No Card Number")
+                    .Replace("{{ExpiryDate}}", booking.ExpiryDate ?? "No Expiry Date")
+                    .Replace("{{CVC}}", booking.CVC ?? "No CVC")
+                    .Replace("{{PickupLocation}}", pickupLocation)
+                    .Replace("{{DropoffLocation}}", dropoffLocation)
                     .Replace("{{Status}}", booking.Status)
-                     .Replace("{{ConfirmationNo}}", Generate(10))
+                    .Replace("{{ConfirmationNo}}", confirmationNo);
 
-                    ;
+                if (!isSave)
+                {
+                    Booking previousBooking = TempData["booking"] as Booking;
+                    if (previousBooking != null)
+                    {
+                        var diff = GetDifferences<Booking>(booking, previousBooking);
+                        emailBody = emailTemplate.Replace("{{Changes}}", string.Join(Environment.NewLine, diff));
+                    }
+                }
 
-               
-                
+                _emailService.SendEmail(booking.Email, isSave ? "Your Booking Confirmation" : "Your Booking Updated", emailBody);
+                TempData["booking"] = null;
 
-
-                _emailService.SendEmail(booking.Email, "Your Booking Confirmation", emailBody);
-
-                return RedirectToAction("BookingSuccess");
+                return RedirectToAction("BookingSuccess", new { CarID = booking.CarID, BookingID = booking.BookingID, ConfirmationNo = confirmationNo });
             }
 
             return View("ConfirmRental", booking);
         }
-
-        public IActionResult BookingSuccess()
+        public IActionResult BookingSuccess(string CarID, long BookingID,string ConfirmationNo)
         {
+            ViewBag.ConfirmationNo = ConfirmationNo;
+
+            ViewBag.CarID = CarID;
+            ViewBag.BookingID = BookingID;
             return View();
+        }
+        public IActionResult CancelBooking(long BookingID)
+        {
+            var result = _context.Bookings.Where(x => x.BookingID == BookingID).FirstOrDefault();
+            ViewBag.ConfirmationNo = TempData["ConfirmationNo"];
+
+            if (result != null)
+            {
+                _context.Bookings.Remove(result);
+                _context.SaveChanges();
+            }
+
+
+            string filePath = Path.Combine(_env.WebRootPath, "CancleTemplate.htm");
+            string emailTemplate = System.IO.File.ReadAllText(filePath);
+
+            string emailBody = emailTemplate
+                .Replace("{{ConfirmationNo}}", TempData["ConfirmationNo"].ToString());
+
+            _emailService.SendEmail(result.Email, "Order is cancellled", emailBody);
+
+            return View();
+        }
+
+        public static List<string> GetDifferences<T>(T obj1, T obj2)
+        {
+            var differences = new List<string>();
+            var type = typeof(T);
+
+            foreach (var prop in type.GetProperties())
+            {
+                var val1 = prop.GetValue(obj1);
+                var val2 = prop.GetValue(obj2);
+
+                if ((val1 == null && val2 != null) ||
+                    (val1 != null && !val1.Equals(val2)))
+                {
+                    differences.Add($"{prop.Name}: '{val1}' vs '{val2}'");
+                }
+            }
+
+            return differences;
         }
     }
 }

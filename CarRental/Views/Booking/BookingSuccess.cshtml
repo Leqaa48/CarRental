@@ -7,12 +7,22 @@
         <div class="col-lg-8">
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-5">
-                    <h2 class="fw-bold text-success">Booking Confirmed!</h2>
+                    <h2 class="fw-bold text-success">
+                        Your Booking has been Confirmed! <span class="text-success">&#10004;</span>
+                    </h2>
+
                     <p class="mt-3">Thank you for your booking. Your request has been successfully processed.</p>
+
+                    <p>
+                        Reservation Code: <strong>@ViewBag.ConfirmationNo</strong>
+                    </p>
+
                     <p>You will receive a confirmation email shortly.</p>
 
                     <div class="mt-4">
                         <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg px-5">Go to Homepage</a>
+                        <a href="@Url.Action("RentCar", "Booking", new { BookingID = ViewBag.BookingID, carId = ViewBag.CarID })" class="btn btn-success btn-lg px-5">Modify</a>
+                        <a href="@Url.Action("CancelBooking", "Booking", new { BookingID = ViewBag.BookingID })" class="btn btn-danger btn-lg px-5">Cancel</a>
                     </div>
                 </div>
             </div>

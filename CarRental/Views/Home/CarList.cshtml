@@ -40,9 +40,12 @@
                                 <span><strong>Transmission:</strong> @car.Transmission</span>
                                 <span><strong>Seats:</strong> @car.Seats</span>
                             </div>
-                            <p class="status">
-                                @car.Status
-                            </p>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <p class="status" style="margin: 0;">
+                                    @car.Status
+                                </p>
+                                <img src="@car.CompanyLogo" alt="Car Image" class="car-image" style="width: 60px; height: auto;">
+                            </div>
 
                             <!-- Rent Now Button -->
                             <a asp-controller="Booking" asp-action="RentCar"

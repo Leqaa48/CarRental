@@ -65,6 +65,7 @@ namespace CarRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Edit(string id, Car car)
         {
             if (id != car.CarID)
@@ -72,28 +73,57 @@ namespace CarRental.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
+                // Debug output of model validation errors
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                foreach (var error in errors)
                 {
-                    _context.Update(car);
-                    await _context.SaveChangesAsync();
+                    Console.WriteLine(error); // يمكنك أيضاً استعمال ViewBag.Errors = errors;
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CarExists(car.CarID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+                return View(car);
             }
-            return View(car);
+
+            var existingCar = await _context.Cars.FindAsync(id);
+            if (existingCar == null)
+            {
+                return NotFound();
+            }
+
+            // Update properties
+            existingCar.Brand = car.Brand;
+            existingCar.Model = car.Model;
+            existingCar.Year = car.Year;
+            existingCar.FuelType = car.FuelType;
+            existingCar.Transmission = car.Transmission;
+            existingCar.Seats = car.Seats;
+            existingCar.DailyRate = car.DailyRate;
+            existingCar.Status = car.Status;
+
+            // Handle CompanyLogo upload
+            if (car.CompanyLogoFile != null && car.CompanyLogoFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/carrentals-master/images");
+                Directory.CreateDirectory(uploadsFolder);
+
+                var logoFileName = Path.GetFileName(car.CompanyLogoFile.FileName);
+                var logoFilePath = Path.Combine(uploadsFolder, logoFileName);
+
+                using (var stream = new FileStream(logoFilePath, FileMode.Create))
+                {
+                    await car.CompanyLogoFile.CopyToAsync(stream);
+                }
+
+                existingCar.CompanyLogo = $"/carrentals-master/images/{logoFileName}";
+            }
+
+            _context.Cars.Update(existingCar);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
+
 
         // GET: Cars/Delete/5
         public async Task<IActionResult> Delete(string id)

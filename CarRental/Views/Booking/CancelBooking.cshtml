@@ -1,0 +1,17 @@
+﻿<section class="container my-5 text-center site-section">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Card Layout for Cancelation Message -->
+            <div class="card">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Your order has been canceled successfully!</h4>
+                    Resrvation Code : <strong>@ViewBag.ConfirmationNo</strong>
+                    <p class="card-text">We’re sorry to see you go. If you have any questions, feel free to contact us.</p>
+
+                    <!-- Button to return to home page -->
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg px-5">Go to Homepage</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
