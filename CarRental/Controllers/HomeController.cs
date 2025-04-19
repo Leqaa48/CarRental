@@ -14,6 +14,9 @@ namespace CarRental.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
         private readonly EmailService _emailService;
+        public DateTime start;
+        public DateTime end;
+
 
         public HomeController(ILogger<HomeController> logger, AppDbContext context, EmailService emailService)
         {
@@ -41,7 +44,7 @@ namespace CarRental.Controllers
             // ????? ???????? ?? TempData
             DateTime? startDate = TempData["StartDate"] != null ? Convert.ToDateTime(TempData["StartDate"]) : (DateTime?)null;
             DateTime? endDate = TempData["EndDate"] != null ? Convert.ToDateTime(TempData["EndDate"]) : (DateTime?)null;
-
+         
             if (startDate.HasValue && endDate.HasValue)
             {
                 var bookedCarIds = await _context.Bookings
@@ -121,6 +124,9 @@ namespace CarRental.Controllers
             TempData["EndDate"] = endDate;
             TempData["Airline"] = airline;
             TempData["FlightNumber"] = flightNumber;
+
+            start = startDate;
+            end= endDate;
 
             return View();
         }

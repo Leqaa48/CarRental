@@ -291,6 +291,9 @@
                                 <input type="hidden" name="carID" value="@Model.Car?.CarID" />
                                 <input type="hidden" name="Brand" value="@Model.Car?.Brand" />
 
+                                <input type="hidden" name="StartDate" value="@ViewData["StartDate"]" />
+                                <input type="hidden" name="EndDate" value="@ViewData["EndDate"]" />
+                          
                                 <div class="col-12 mb-3">
                                     <label for="personSelect" class="form-label">Select a person to auto-fill:</label>
                                     <select class="form-select" id="personSelect">

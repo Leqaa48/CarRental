@@ -48,12 +48,21 @@
                             </div>
 
                             <!-- Rent Now Button -->
-                            <a asp-controller="Booking" asp-action="RentCar"
+                         @*    <a asp-controller="Booking" asp-action="RentCar" 
                                asp-route-carId="@car.CarID"
                                class="btn btn-primary">
                                 Rent Now
-                            </a>
+                            </a> *@
+                            
 
+                            <a asp-controller="Booking"
+                               asp-action="RentCar"
+                               asp-route-carId="@car.CarID"
+                               asp-route-startDate="@ViewBag.StartDate"
+                               asp-route-endDate="@ViewBag.StartDate"
+                               class="btn btn-primary">
+                                Rent Now
+                            </a>
                         </div>
                     </div>
                 </div>

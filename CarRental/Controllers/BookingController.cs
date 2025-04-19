@@ -117,21 +117,24 @@ namespace CarRental.Controllers
         }
 
         [HttpGet]
-        public IActionResult ConfirmRental(string carID,string Brand,
+             
+        public IActionResult ConfirmRental(string carID,string Brand,string StartDate,string EndDate,
      string firstName, string secondName, string thirdName, string LastName,
      string email, string phoneNumber, string flightName, string flightNumber,
      string address, string city, string postCode, string cardholdersName,
      string cardholdersNumber, string expiryDate, string cvc, int? BookingID = null)
         {
             var car = _context.Cars.FirstOrDefault(c => c.CarID == carID);
-            DateTime startDate = Convert.ToDateTime(TempData["StartDate"]);
-            DateTime endDate = Convert.ToDateTime(TempData["EndDate"]);
+            string model = car.Model.ToString();
+                DateTime startDate = Convert.ToDateTime(StartDate);
+            DateTime endDate = Convert.ToDateTime(EndDate);
             if (car == null)
             {
                 TempData["ErrorMessage"] = "Car not found.";
                 return RedirectToAction("Index", "Home");
             }
-
+            ViewBag.Brand = car.Brand;
+            ViewBag.model = car.Model;
             var hourlyRate = car.DailyRate;
             var hoursDiff = (endDate - startDate).TotalHours;
             var totalPrice = hourlyRate * (decimal)hoursDiff;
@@ -160,6 +163,7 @@ namespace CarRental.Controllers
                 CardholdersNumber = cardholdersNumber,
                 ExpiryDate = expiryDate,
                 CVC = cvc,
+                Model= model,
                 Status = BookingStatus.Pending.ToString()
             };
 
