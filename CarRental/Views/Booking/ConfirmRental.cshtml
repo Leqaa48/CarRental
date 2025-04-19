@@ -30,6 +30,8 @@
                         <p><strong>Fuel Type:</strong> @Model.Car.FuelType</p>
                         <p><strong>Transmission:</strong> @Model.Car.Transmission</p>
                         <p><strong>Seats:</strong> @Model.Car.Seats</p>
+                        <p><strong>Brand:</strong> @Model.Car.Brand</p>
+
                         <p><strong>Price per Hour:</strong> @Model.Car.DailyRate.ToString("C")</p>
                     }
 
@@ -53,6 +55,7 @@
                     <!-- Action Buttons -->
                     <div class="mt-4 text-center d-flex justify-content-center gap-3">
                         <form asp-action="ConfirmBooking" method="post" class="d-flex flex-grow-1">
+                            <input type="hidden" name="Brand" value="@Model.Car.Brand" />
                             <input type="hidden" name="CarID" value="@Model.CarID" />
                             <input type="hidden" name="StartDate" value="@Model.StartDate" />
                             <input type="hidden" name="EndDate" value="@Model.EndDate" />

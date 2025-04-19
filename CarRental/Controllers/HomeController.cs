@@ -22,7 +22,7 @@ namespace CarRental.Controllers
             _emailService = emailService;
         }
 
-        public async Task<IActionResult> SendWelcomeEmail()
+        public IActionResult SendWelcomeEmail()
         {
             string emailBody = "<h1>Welcome to our Service</h1><p>We're glad to have you with us!</p>";
             _emailService.SendEmail("ahmadsamen23@gmail.com", "Welcome!", emailBody);
@@ -34,11 +34,14 @@ namespace CarRental.Controllers
             return View();
         }
 
-        public async Task<IActionResult> CarList( int page = 1, int pageSize = 1000)
+        public async Task<IActionResult> CarList(int page = 1, int pageSize = 1000)
         {
             var query = _context.Cars.Where(c => c.Status == "Available");
-            DateTime? startDate = Convert.ToDateTime(TempData["StartDate"]);
-            DateTime? endDate = Convert.ToDateTime(TempData["EndDate"]);
+
+            // ????? ???????? ?? TempData
+            DateTime? startDate = TempData["StartDate"] != null ? Convert.ToDateTime(TempData["StartDate"]) : (DateTime?)null;
+            DateTime? endDate = TempData["EndDate"] != null ? Convert.ToDateTime(TempData["EndDate"]) : (DateTime?)null;
+
             if (startDate.HasValue && endDate.HasValue)
             {
                 var bookedCarIds = await _context.Bookings

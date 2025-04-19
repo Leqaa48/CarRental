@@ -22,6 +22,7 @@ namespace CarRental.Controllers
             _emailService = emailService;
             _env = env;
         }
+
         public static string Generate(int length)
         {
             var bytes = new byte[length];
@@ -32,7 +33,8 @@ namespace CarRental.Controllers
                          .Replace("/", "")
                          .Substring(0, length);
         }
-        public IActionResult RentCar(string carId, DateTime? startDate = null, DateTime? endDate = null, int? BookingID = null)
+
+        public IActionResult RentCar(string carId, DateTime? startDate, DateTime? endDate , int? BookingID = null)
         {
             if (BookingID == null)
             {
@@ -115,7 +117,7 @@ namespace CarRental.Controllers
         }
 
         [HttpGet]
-        public IActionResult ConfirmRental(string carID,
+        public IActionResult ConfirmRental(string carID,string Brand,
      string firstName, string secondName, string thirdName, string LastName,
      string email, string phoneNumber, string flightName, string flightNumber,
      string address, string city, string postCode, string cardholdersName,
@@ -138,6 +140,7 @@ namespace CarRental.Controllers
             {
                 BookingID = BookingID ?? 0,
                 CarID = carID,
+                Brand=Brand,
                 Car = car,
                 StartDate = startDate,
                 EndDate = endDate,
@@ -194,8 +197,8 @@ namespace CarRental.Controllers
                 string filePath = Path.Combine(_env.WebRootPath, "emailTemplate.htm");
                 string emailTemplate = System.IO.File.ReadAllText(filePath);
 
-                string pickupLocation = TempData["PickupLocation"]?.ToString() ?? "Default Pickup Location";
-                string dropoffLocation = TempData["DropoffLocation"]?.ToString() ?? "Default Dropoff Location";
+                string pickupLocation = TempData["PickupLocation"]?.ToString() ?? "Amman";
+                string dropoffLocation = TempData["DropoffLocation"]?.ToString() ?? "Amman";
                 confirmationNo = TempData["ConfirmationNo"]?.ToString() ?? "No Confirmation";
 
                 string emailBody = emailTemplate
@@ -207,6 +210,7 @@ namespace CarRental.Controllers
                     .Replace("{{PhoneNumber}}", booking.PhoneNumber ?? "No Phone Number")
                     .Replace("{{BookingID}}", booking.BookingID.ToString())
                     .Replace("{{CarID}}", booking.CarID ?? "Unknown Car")
+                    .Replace("{{Brand}}", booking.Brand ?? "Unknown Brand")
                     .Replace("{{StartDate}}", booking.StartDate.ToString("yyyy-MM-dd HH:mm"))
                     .Replace("{{EndDate}}", booking.EndDate.ToString("yyyy-MM-dd HH:mm"))
                     .Replace("{{TotalPrice}}", booking.TotalPrice.ToString("C"))
@@ -226,22 +230,28 @@ namespace CarRental.Controllers
 
                 if (!isSave)
                 {
-                    Booking previousBooking = TempData["booking"] as Booking;
+                    Booking? previousBooking = TempData["booking"] as Booking;
                     if (previousBooking != null)
                     {
                         var diff = GetDifferences<Booking>(booking, previousBooking);
-                        emailBody = emailTemplate.Replace("{{Changes}}", string.Join(Environment.NewLine, diff));
+                        emailBody = emailBody.Replace("{{Changes}}", string.Join("<br/>", diff));
                     }
                 }
+                else
+                {
+                    emailBody = emailBody.Replace("{{Changes}}", "No changes, this is a new booking.");
+                }
+
 
                 _emailService.SendEmail(booking.Email, isSave ? "Your Booking Confirmation" : "Your Booking Updated", emailBody);
                 TempData["booking"] = null;
 
-                return RedirectToAction("BookingSuccess", new { CarID = booking.CarID, BookingID = booking.BookingID, ConfirmationNo = confirmationNo });
+                return RedirectToAction("BookingSuccess", new { booking.CarID, booking.BookingID, ConfirmationNo = confirmationNo });
             }
 
             return View("ConfirmRental", booking);
         }
+
         public IActionResult BookingSuccess(string CarID, long BookingID,string ConfirmationNo)
         {
             ViewBag.ConfirmationNo = ConfirmationNo;
@@ -250,25 +260,59 @@ namespace CarRental.Controllers
             ViewBag.BookingID = BookingID;
             return View();
         }
+
         public IActionResult CancelBooking(long BookingID)
         {
-            var result = _context.Bookings.Where(x => x.BookingID == BookingID).FirstOrDefault();
-            ViewBag.ConfirmationNo = TempData["ConfirmationNo"];
+            bool isCancelled = false;
+            string confirmationNo;
+
+            var result = _context.Bookings.FirstOrDefault(x => x.BookingID == BookingID);
+            confirmationNo = TempData["ConfirmationNo"]?.ToString() ?? "No Confirmation";
 
             if (result != null)
             {
+                isCancelled = true;
                 _context.Bookings.Remove(result);
                 _context.SaveChanges();
             }
-
 
             string filePath = Path.Combine(_env.WebRootPath, "CancleTemplate.htm");
             string emailTemplate = System.IO.File.ReadAllText(filePath);
 
             string emailBody = emailTemplate
-                .Replace("{{ConfirmationNo}}", TempData["ConfirmationNo"].ToString());
+                .Replace("{{FirstName}}", result?.FirstName ?? "First Name")
+                .Replace("{{SecondName}}", result?.SecondName ?? "Second Name")
+                .Replace("{{ThirdName}}", result?.ThirdName ?? "Third Name")
+                .Replace("{{LastName}}", result?.LastName ?? "Last Name")
+                .Replace("{{Email}}", result?.Email ?? "No Email")
+                .Replace("{{PhoneNumber}}", result?.PhoneNumber ?? "No Phone Number")
+                .Replace("{{BookingID}}", result?.BookingID.ToString() ?? "0")
+                .Replace("{{CarID}}", result?.CarID ?? "Unknown Car")
+                .Replace("{{StartDate}}", result?.StartDate.ToString("yyyy-MM-dd HH:mm") ?? "")
+                .Replace("{{EndDate}}", result?.EndDate.ToString("yyyy-MM-dd HH:mm") ?? "")
+                .Replace("{{TotalPrice}}", result?.TotalPrice.ToString("C") ?? "0.00")
+                .Replace("{{FlightName}}", result?.FlightName ?? "No Flight Name")
+                .Replace("{{FlightNumber}}", result?.FlightNumber ?? "No Flight Number")
+                .Replace("{{Address}}", result?.Address ?? "No Address")
+                .Replace("{{City}}", result?.City ?? "No City")
+                .Replace("{{PostCode}}", result?.PostCode ?? "No Post Code")
+                .Replace("{{CardholdersName}}", result?.CardholdersName ?? "No Cardholder Name")
+                .Replace("{{CardholdersNumber}}", result?.CardholdersNumber ?? "No Card Number")
+                .Replace("{{ExpiryDate}}", result?.ExpiryDate ?? "No Expiry Date")
+                .Replace("{{CVC}}", result?.CVC ?? "No CVC")
+                .Replace("{{Status}}", result?.Status ?? "Cancelled")
+                .Replace("{{ConfirmationNo}}", confirmationNo);
 
-            _emailService.SendEmail(result.Email, "Order is cancellled", emailBody);
+            if (isCancelled)
+            {
+                emailBody = emailBody.Replace("{{CancellationStatus}}", "Your booking has been cancelled successfully.");
+            }
+            else
+            {
+                emailBody = emailBody.Replace("{{CancellationStatus}}", "No booking found to cancel.");
+            }
+
+            _emailService.SendEmail(result?.Email ?? "noemail@example.com", "Your Booking Is Cancele", emailBody);
 
             return View();
         }

@@ -289,6 +289,8 @@
                         <form asp-action="ConfirmRental" asp-controller="Booking" method="get" class="needs-validation" novalidate>
                             <div class="row">
                                 <input type="hidden" name="carID" value="@Model.Car?.CarID" />
+                                <input type="hidden" name="Brand" value="@Model.Car?.Brand" />
+
                                 <div class="col-12 mb-3">
                                     <label for="personSelect" class="form-label">Select a person to auto-fill:</label>
                                     <select class="form-select" id="personSelect">
