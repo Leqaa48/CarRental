@@ -18,18 +18,18 @@
                         <!-- Pick-Up Location -->
                         <div class="col-md-3 mb-3 mb-md-0">
                             <label for="pickupLocation" class="text-white">Pick-Up Location</label>
-                            <select name="pickupLocation" id="pickupLocation" class="form-control px-3">
-                                <option value="">Select Pick-Up Location</option>
+                            <select name="dropoffLocation" id="dropoffLocation" class="form-control px-3">
+                                <option value="">Select Drop-Off Location</option>
                                 <option value="Amman">Amman</option>
                                 <option value="Queen Alia Airport">Queen Alia Airport</option>
-                                <option value="Dubai">Dubai</option>
-                                <option value="Riyadh">Riyadh</option>
-                                <option value="Cairo">Cairo</option>
-                                <option value="Beirut">Beirut</option>
-                                <option value="Doha">Doha</option>
-                                <option value="Jeddah">Jeddah</option>
-                                <option value="Abu Dhabi">Abu Dhabi</option>
-                                <option value="Kuwait City">Kuwait City</option>
+                                <option value="Irbid">Irbid</option>
+                                <option value="Balqa">Balqa</option>
+                                <option value="Karak">Karak</option>
+                                <option value="Maan">Maan</option>
+                                <option value="Zarqa">Zarqa</option>
+                                <option value="Mafraq">Mafraq</option>
+                                <option value="Jerash">Jerash</option>
+                                <option value="Ajloun City">Ajloun</option>
                             </select>
                         </div>
 
@@ -40,14 +40,14 @@
                                 <option value="">Select Drop-Off Location</option>
                                 <option value="Amman">Amman</option>
                                 <option value="Queen Alia Airport">Queen Alia Airport</option>
-                                <option value="Dubai">Dubai</option>
-                                <option value="Riyadh">Riyadh</option>
-                                <option value="Cairo">Cairo</option>
-                                <option value="Beirut">Beirut</option>
-                                <option value="Doha">Doha</option>
-                                <option value="Jeddah">Jeddah</option>
-                                <option value="Abu Dhabi">Abu Dhabi</option>
-                                <option value="Kuwait City">Kuwait City</option>
+                                <option value="Irbid">Irbid</option>
+                                <option value="Balqa">Balqa</option>
+                                <option value="Karak">Karak</option>
+                                <option value="Maan">Maan</option>
+                                <option value="Zarqa">Zarqa</option>
+                                <option value="Mafraq">Mafraq</option>
+                                <option value="Jerash">Jerash</option>
+                                <option value="Ajloun City">Ajloun</option>
                             </select>
                         </div>
 
@@ -68,6 +68,7 @@
                                    min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
                                    class="form-control px-3">
                         </div>
+
                     </div>
 
                     <!-- Flight Information -->
@@ -84,3 +85,23 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        const startDateInput = document.getElementById("startDate");
+        const endDateInput = document.getElementById("endDate");
+
+        startDateInput.addEventListener("change", function () {
+            const startDate = new Date(this.value);
+            if (!isNaN(startDate)) {
+                const isoString = startDate.toISOString().slice(0, 16);
+                endDateInput.min = isoString;
+
+                // Optional: reset end date if it's before the new start date
+                const endDate = new Date(endDateInput.value);
+                if (endDate < startDate) {
+                    endDateInput.value = isoString;
+                }
+            }
+        });
+    </script>
+}

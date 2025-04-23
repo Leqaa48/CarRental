@@ -53,13 +53,15 @@
                                class="btn btn-primary">
                                 Rent Now
                             </a> *@
-                            
+                          
 
                             <a asp-controller="Booking"
                                asp-action="RentCar"
                                asp-route-carId="@car.CarID"
                                asp-route-startDate="@ViewBag.StartDate"
-                               asp-route-endDate="@ViewBag.StartDate"
+                               asp-route-endDate="@ViewBag.EndDate"
+                               asp-route-BookingID="@ViewBag.BookingID"
+                               asp-route-confirmationNo="@ViewBag.confirmationNo"
                                class="btn btn-primary">
                                 Rent Now
                             </a>

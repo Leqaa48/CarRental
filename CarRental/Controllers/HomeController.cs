@@ -32,13 +32,22 @@ namespace CarRental.Controllers
             return View();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? confirmationNo)
         {
+            if (!string.IsNullOrEmpty(confirmationNo))
+            {
+                HttpContext.Session.SetString("ConfirmationNo", confirmationNo);
+            }
+
             return View();
         }
 
-        public async Task<IActionResult> CarList(int page = 1, int pageSize = 1000)
+        public async Task<IActionResult> CarList(int page = 1, int pageSize = 1000, int? BookingID = null, string? confirmationNo = null)
         {
+            ViewBag.BookingID = BookingID;
+
+            ViewBag.confirmationNo = confirmationNo;
+
             var query = _context.Cars.Where(c => c.Status == "Available");
 
             // ????? ???????? ?? TempData

@@ -33,11 +33,12 @@
                         <p><strong>Brand:</strong> @ViewBag.model</p>
 
                         <p><strong>Price per Hour:</strong> @Model.Car.DailyRate.ToString("C")</p>
+
                     }
 
                     <p><strong>Start Date:</strong> @(Model.StartDate.ToString("yyyy-MM-dd HH:mm") ?? "")</p>
                     <p><strong>End Date:</strong> @Model.EndDate.ToString("yyyy-MM-dd HH:mm")</p>
-                    <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
+                    <p><strong>Total Price:</strong> @ViewBag.totalPrice</p>
 
                     <!-- Flight Information -->
                     <h5 class="mt-4">Flight Information:</h5>

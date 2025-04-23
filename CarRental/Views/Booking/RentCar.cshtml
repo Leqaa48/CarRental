@@ -1,73 +1,103 @@
 ﻿@model Booking
-   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rental Car Deal</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-        }
-        .container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+@{
+    var locations = new List<string>
+    {
+        "Amman",
+        "Queen Alia Airport",
+        "Irbid",
+        "Balqa",
+        "Karak",
+        "Maan",
+        "Zarqa",
+        "Mafraq",
+        "Jerash",
+        "Ajloun City"
+    };
+
+}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rental Car Deal</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
         .header h1 {
             font-size: 18px;
             margin: 0;
         }
-        .details {
-            margin-top: 10px;
-            color: #666;
-        }
-        .protection-options {
-            margin-top: 20px;
-        }
-        .options-header {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .protection-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
+
+    .details {
+        margin-top: 10px;
+        color: #666;
+    }
+
+    .protection-options {
+        margin-top: 20px;
+    }
+
+    .options-header {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .protection-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
         .protection-table th, .protection-table td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         .protection-table th {
             background-color: #f2f2f2;
         }
-        .total-cost {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-        .note {
-            color: #666;
-            font-size: 12px;
-        }
-        .refund {
-            color: green;
-        }
-        .no-refund {
-            color: red;
-        }
-        .fast-reliable {
-            background-color: #e7f4e4;
-            padding: 10px;
-            border-left: 5px solid #4caf50;
-        }
-    </style>
+
+    .total-cost {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .note {
+        color: #666;
+        font-size: 12px;
+    }
+
+    .refund {
+        color: green;
+    }
+
+    .no-refund {
+        color: red;
+    }
+
+    .fast-reliable {
+        background-color: #e7f4e4;
+        padding: 10px;
+        border-left: 5px solid #4caf50;
+    }
+</style>
 @{
     ViewData["Title"] = "Rent Car";
 }
@@ -200,77 +230,77 @@
                     <div id="panel2" class="panel">
 
                         <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
-                                </div>
-                                <div class="col-md-6 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-semibold">@Model.Car?.Brand @Model.Car?.Model (@Model.Car?.Year)</h5>
-                                    <p><strong>Plate Number:</strong> @Model.Car?.CarID</p>
-                                    <p><strong>Price per Hour:</strong> @Model.Car?.DailyRate.ToString("C")</p>
-                                    <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
-                                    <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
-                                    <p><strong>Seats:</strong> @Model.Car?.Seats</p>
+                            <div class="col-md-6">
+                                <img src="@Model.Car?.Image" alt="Car Image" class="img-fluid rounded shadow-sm w-100" id="carImage" style="cursor: pointer;" />
+                            </div>
+                            <div class="col-md-6 d-flex flex-column justify-content-center">
+                                <h5 class="fw-semibold">@Model.Car?.Brand @Model.Car?.Model (@Model.Car?.Year)</h5>
+                                <p><strong>Plate Number:</strong> @Model.Car?.CarID</p>
+                                <p><strong>Price per Hour:</strong> @Model.Car?.DailyRate.ToString("C")</p>
+                                <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
+                                <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
+                                <p><strong>Seats:</strong> @Model.Car?.Seats</p>
+                            </div>
+                        </div>
+
+                        <div class="container">
+                            <div class="header">
+                                <h1>Queen Alia International Airport</h1>
+                                <div class="details">
+                                    <p>Thu 10 Apr 2025, 10:00</p>
+                                    <p>Sun 13 Apr 2025, 10:00</p>
+                                    <a href="#">Edit</a>
                                 </div>
                             </div>
-    
-<div class="container">
-    <div class="header">
-        <h1>Queen Alia International Airport</h1>
-        <div class="details">
-            <p>Thu 10 Apr 2025, 10:00</p>
-            <p>Sun 13 Apr 2025, 10:00</p>
-            <a href="#">Edit</a>
-        </div>
-    </div>
-    <div class="protection-options">
-        <p class="options-header">Protection options</p>
-        <p>Protection... for peace of mind</p>
-        <p><strong>FREE cancellation:</strong> Full refund if you cancel within your credit card.</p>
-        <p class="note">At the counter, the car hire company will hold a deposit amount on your credit card. You could lose your whole deposit if the car is damaged or stolen, but as long as you have our Full Protection, Rentalcover.com will refund you!</p>
-        <p>Terms & Conditions apply for all peace of mind.</p>
-    </div>
-</div>
+                            <div class="protection-options">
+                                <p class="options-header">Protection options</p>
+                                <p>Protection... for peace of mind</p>
+                                <p><strong>FREE cancellation:</strong> Full refund if you cancel within your credit card.</p>
+                                <p class="note">At the counter, the car hire company will hold a deposit amount on your credit card. You could lose your whole deposit if the car is damaged or stolen, but as long as you have our Full Protection, Rentalcover.com will refund you!</p>
+                                <p>Terms & Conditions apply for all peace of mind.</p>
+                            </div>
+                        </div>
 
-<div class="container">
-    <p class="options-header">What's covered</p>
-    <table class="protection-table">
-        <thead>
-            <tr>
-                <th>Basic protection</th>
-                <th>Full Protection</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Theft of car</td>
-                <td>You pay US$493 (your excess) <span class="refund">✔️</span></td>
-            </tr>
-            <tr>
-                <td>Bodywork damage</td>
-                <td>You pay US$0 <span class="refund">✔️</span></td>
-            </tr>
-            <tr>
-                <td>Any other damage</td>
-                <td>You pay the full cost <span class="no-refund">❌</span></td>
-            </tr>
-            <tr>
-                <td>Any other charges</td>
-                <td>Charges for towing, lost keys, rental reduction, etc.<br> You pay the full cost <span class="no-refund">❌</span></td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="total-cost">
-        <p>Total cost: US$60.06</p>
-    </div>
-    <div class="fast-reliable">
-        <p><strong>Fast and reliable</strong></p>
-        <p>Over 97% of claims paid out</p>
-        <p>Car price breakdown</p>
-        <p>Car hire charge: US$58.49</p>
-        <p>Car price for 3 days: US$60.06</p>
-        <p>This car is costing you just US$58.49 - a real bargain...<br> In case you decide not to pick up your car at Queen Alia International Airport.</p>
-    </div>
-</div>
+                        <div class="container">
+                            <p class="options-header">What's covered</p>
+                            <table class="protection-table">
+                                <thead>
+                                    <tr>
+                                        <th>Basic protection</th>
+                                        <th>Full Protection</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Theft of car</td>
+                                        <td>You pay US$493 (your excess) <span class="refund">✔️</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bodywork damage</td>
+                                        <td>You pay US$0 <span class="refund">✔️</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Any other damage</td>
+                                        <td>You pay the full cost <span class="no-refund">❌</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Any other charges</td>
+                                        <td>Charges for towing, lost keys, rental reduction, etc.<br> You pay the full cost <span class="no-refund">❌</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="total-cost">
+                                <p>Total cost: US$60.06</p>
+                            </div>
+                            <div class="fast-reliable">
+                                <p><strong>Fast and reliable</strong></p>
+                                <p>Over 97% of claims paid out</p>
+                                <p>Car price breakdown</p>
+                                <p>Car hire charge: US$58.49</p>
+                                <p>Car price for 3 days: US$60.06</p>
+                                <p>This car is costing you just US$58.49 - a real bargain...<br> In case you decide not to pick up your car at Queen Alia International Airport.</p>
+                            </div>
+                        </div>
                     </div>
                     <div id="panel3" class="panel">
                         <div class="row mb-4">
@@ -284,6 +314,21 @@
                                 <p><strong>Fuel Type:</strong> @Model.Car?.FuelType</p>
                                 <p><strong>Transmission:</strong> @Model.Car?.Transmission</p>
                                 <p><strong>Seats:</strong> @Model.Car?.Seats</p>
+
+                                
+          
+
+                                @if(ViewBag.BookingID != null)
+                                {
+                        <a href="@Url.Action("CarList", "Home",new { BookingId =ViewBag.BookingID,confirmationNo=@ViewBag.confirmationNo}))" class="btn btn-primary btn-lg px-5">Edit Car</a>
+
+
+                                }
+
+
+
+
+
                             </div>
                         </div>
                         <form asp-action="ConfirmRental" asp-controller="Booking" method="get" class="needs-validation" novalidate>
@@ -291,9 +336,49 @@
                                 <input type="hidden" name="carID" value="@Model.Car?.CarID" />
                                 <input type="hidden" name="Brand" value="@Model.Car?.Brand" />
 
-                                <input type="hidden" name="StartDate" value="@ViewData["StartDate"]" />
-                                <input type="hidden" name="EndDate" value="@ViewData["EndDate"]" />
-                          
+
+                                <!-- Pick-Up Location -->
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <label for="pickupLocation" class="text-white">Pick-Up Location</label>
+                                    <select name="pickupLocation" id="pickupLocation" class="form-control px-3">
+                                        <option value="">Select Pick-Up Location</option>
+                                        @foreach (var location in locations)
+                                        {
+                                            var isSelected = ViewData["pickupLocation"].ToString() == location ? "selected=\"selected\"" : "";
+                                            <option value="@location" selected="@isSelected">@location</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <!-- Drop-Off Location -->
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <label for="dropoffLocation" class="text-white">Drop-Off Location</label>
+                                    <select name="dropoffLocation" id="dropoffLocation" class="form-control px-3">
+                                        <option value="">Select Drop-Off Location</option>
+                                        @foreach (var location in locations)
+                                        {
+                                            var isSelected = ViewData["dropoffLocation"].ToString() == location ? "selected=\"selected\"" : "";
+                                            <option value="@location" selected="@isSelected">@location</option>
+                                        }
+                                    </select>
+                                </div>
+                                <!-- Start Date -->
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <label for="StartDate" class="text-white">Start Date</label>
+                                    <input type="datetime-local" name="StartDate" id="StartDate"
+                                           value="@ViewData["StartDate"]"
+                                           min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
+                                           class="form-control px-3">
+                                </div>
+
+                                <!-- End Date -->
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <label for="EndDate" class="text-white">End Date</label>
+                                    <input type="datetime-local" name="EndDate" id="EndDate"
+                                           value="@ViewData["EndDate"]"
+                                           min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
+                                           class="form-control px-3">
+                                </div>
                                 <div class="col-12 mb-3">
                                     <label for="personSelect" class="form-label">Select a person to auto-fill:</label>
                                     <select class="form-select" id="personSelect">
@@ -474,26 +559,26 @@
                             </div>
                         </form>
                     </div>                    <style>
-                        .card {
-                            margin-bottom: 1rem;
-                            border: 1px solid #dee2e6;
-                            border-radius: 0.375rem;
-                        }
+                                                  .card {
+                                                      margin-bottom: 1rem;
+                                                      border: 1px solid #dee2e6;
+                                                      border-radius: 0.375rem;
+                                                  }
 
-                        .card-header {
-                            padding: 0.75rem 1.25rem;
-                            background-color: #f8f9fa;
-                            border-bottom: 1px solid #dee2e6;
-                        }
+                                                  .card-header {
+                                                      padding: 0.75rem 1.25rem;
+                                                      background-color: #f8f9fa;
+                                                      border-bottom: 1px solid #dee2e6;
+                                                  }
 
-                        .form-floating {
-                            margin-bottom: 1rem;
-                        }
+                                                  .form-floating {
+                                                      margin-bottom: 1rem;
+                                                  }
 
-                        .sticky-top {
-                            position: -webkit-sticky;
-                            position: sticky;
-                        }
+                                                  .sticky-top {
+                                                      position: -webkit-sticky;
+                                                      position: sticky;
+                                                  }
                     </style>
 
                     <script>
@@ -636,7 +721,7 @@
             document.getElementById('SecondName').value = 'Mohammed';
             document.getElementById('ThirdName').value = 'Ali';
             document.getElementById('LastName').value = 'Al-Hassan';
-            document.getElementById('Email').value = 'ahmadsamen23@gmail.com';
+            document.getElementById('Email').value = 'amdsamen23@outlook.com';
             document.getElementById('PhoneNumber').value = '786634288';
 
             // Billing Info
@@ -663,7 +748,7 @@
             document.getElementById('SecondName').value = 'Hassan';
             document.getElementById('ThirdName').value = 'Omar';
             document.getElementById('LastName').value = 'Al-Masri';
-            document.getElementById('Email').value = 'ahmadsamen23@gmail.com';
+            document.getElementById('Email').value = 'amdsamen23@outlook.com';
             document.getElementById('PhoneNumber').value = '798765432';
 
             // Billing Info
@@ -690,7 +775,7 @@
             document.getElementById('SecondName').value = 'Ahmed';
             document.getElementById('ThirdName').value = 'Yousef';
             document.getElementById('LastName').value = 'Al-Fayed';
-            document.getElementById('Email').value = 'ahmadsamen23@gmail.com';
+            document.getElementById('Email').value = 'amdsamen23@outlook.com';
             document.getElementById('PhoneNumber').value = '712345678';
 
             // Billing Info
@@ -712,8 +797,13 @@
             document.getElementById('CVC').value = '7890';
         }
     });
-    let currentPanel = 1;
+let currentPanel = @Model.BookingID > 0 ? 3 : 1;
+    if(currentPanel==3){
+                document.getElementById(`panel${1}`).classList.remove('active');
+                document.getElementById(`panel${currentPanel}`).classList.add('active');
 
+
+    }
     document.getElementById('nextBtn').addEventListener('click', () => {
         // Hide current panel
         document.getElementById(`panel${currentPanel}`).classList.remove('active');

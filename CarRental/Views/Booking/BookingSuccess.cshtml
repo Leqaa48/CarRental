@@ -3,10 +3,15 @@
 }
 
 <section class="container my-5 text-center site-section">
+
     <div class="row justify-content-center">
+
         <div class="col-lg-8">
+
             <div class="card shadow-lg border-0 rounded-4">
+
                 <div class="card-body p-5">
+
                     <h2 class="fw-bold text-success">
                         Your Booking has been Confirmed! <span class="text-success">&#10004;</span>
                     </h2>
@@ -21,11 +26,36 @@
 
                     <div class="mt-4">
                         <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg px-5">Go to Homepage</a>
-                        <a href="@Url.Action("RentCar", "Booking", new { BookingID = ViewBag.BookingID, carId = ViewBag.CarID })" class="btn btn-success btn-lg px-5">Modify</a>
-                        <a href="@Url.Action("CancelBooking", "Booking", new { BookingID = ViewBag.BookingID })" class="btn btn-danger btn-lg px-5">Cancel</a>
+                        <a href="@Url.Action("RentCar", "Booking", new { BookingId =ViewBag.BookingID,carId=ViewBag.CarID,confirmationNo=@ViewBag.ConfirmationNo})" class="btn btn-success btn-lg px-5">Modify</a>
+
+                        <form id="cancelForm" method="post" asp-action="CancelBooking" asp-controller="Booking" style="display:inline;">
+                            <input type="hidden" name="BookingID" value="@ViewBag.BookingID" />
+                            <button type="button" class="btn btn-danger btn-lg px-5" onclick="confirmCancel()">Cancel</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmCancel() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to cancel this booking?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('cancelForm').submit();
+                }
+            });
+        }
+    </script>
+}

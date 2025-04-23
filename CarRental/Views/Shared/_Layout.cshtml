@@ -50,6 +50,9 @@
                     <div class="col-3">
                         <div class="site-logo">
                             <a href="index.html"><strong>CarRental</strong></a>
+                            <a href="AllBookings.html"><strong>AllBookings</strong></a>
+
+                            
                         </div>
                     </div>
 
@@ -60,7 +63,10 @@
                         <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
                             <ul class="site-menu main-menu js-clone-nav ml-auto ">
                                 <li class="active"><a asp-action="Index" asp-controller="Home" class="nav-link">Home</a></li>
+                               
                                 <li><a asp-action="CarList" asp-controller="Home" class="nav-link">Cars</a></li>
+                                <li><a asp-action="AllBookings" asp-controller="Booking" class="nav-link">AllBookingsCars</a></li>
+
                                 <li><a href="about.html" class="nav-link">About Us</a></li>
                                 <li><a asp-action="Contact" asp-controller="Home" class="nav-link">Contact</a></li>
                             </ul>
@@ -147,6 +153,7 @@
                 </div>
             </div>
         </footer>
+        @RenderSection("Scripts", required: false)
 
     </div>
 

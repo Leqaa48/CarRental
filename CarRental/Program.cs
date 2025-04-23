@@ -32,6 +32,8 @@ namespace CarRental
 
             builder.Services.AddScoped<UserManager<ApplicationUser>>();
             builder.Services.AddScoped<RoleManager<IdentityRole>>();
+            builder.Services.AddSession();
+            builder.Services.AddDistributedMemoryCache();
 
             var app = builder.Build();
 
@@ -41,7 +43,7 @@ namespace CarRental
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+    
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -52,7 +54,7 @@ namespace CarRental
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
             );
-
+            app.UseSession();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}"

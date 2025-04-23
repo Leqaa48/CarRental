@@ -34,8 +34,21 @@ namespace CarRental.Controllers
                          .Substring(0, length);
         }
 
-        public IActionResult RentCar(string carId, DateTime? startDate, DateTime? endDate , int? BookingID = null)
+        public IActionResult AllBookings()
         {
+            var bookings = _context.Bookings.ToList(); // Booking NOT BookingViewModel
+            return View(bookings);
+        }
+
+        public IActionResult RentCar(string carId, DateTime? startDate, DateTime? endDate, int? BookingID = null,string? confirmationNo=null)
+        {
+            ViewData["pickupLocation"] = TempData["PickupLocation"]?.ToString() ?? "Amman";
+            ViewData["dropoffLocation"] = TempData["DropoffLocation"]?.ToString() ?? "Amman";
+            if (!string.IsNullOrEmpty(confirmationNo))
+            {
+                HttpContext.Session.SetString("ConfirmationNo", confirmationNo);
+            }
+
             if (BookingID == null)
             {
                 if (!startDate.HasValue)
@@ -71,7 +84,7 @@ namespace CarRental.Controllers
                     return View();
                 }
 
-                double hoursDiff = (endDate.Value - startDate.Value).TotalHours;
+                double hoursDiff = (endDate.Value - startDate.Value).TotalDays;
                 double totalPrice = ((double)car.DailyRate) * hoursDiff;
 
                 var booking = new Booking
@@ -86,22 +99,11 @@ namespace CarRental.Controllers
                 ViewData["EndDate"] = booking.EndDate.ToString("yyyy-MM-ddTHH:mm");
                 ViewData["TotalPrice"] = totalPrice.ToString("C");
 
+
                 return View(booking);
             }
             else
             {
-                //TempData["PickupLocation"] = pickupLocation;
-                //TempData["DropoffLocation"] = dropoffLocation;
-
-                ViewData["StartDate"] = TempData["StartDate"]?.ToString() ?? DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
-                ViewData["EndDate"] = TempData["EndDate"]?.ToString() ?? DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
-                ViewData["BookingID"] = BookingID;
-
-                if (string.IsNullOrEmpty(carId))
-                {
-                    return BadRequest("Invalid request parameters.");
-                }
-
                 var car = _context.Cars.FirstOrDefault(c => c.CarID == carId);
 
                 if (car == null)
@@ -110,44 +112,70 @@ namespace CarRental.Controllers
                 }
 
                 var result = _context.Bookings.FirstOrDefault(b => b.BookingID == BookingID);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
                 result.Car = car;
+                ViewData["StartDate"] = result.StartDate.ToString("yyyy-MM-ddTHH:mm");
+                ViewData["EndDate"] = result.EndDate.ToString("yyyy-MM-ddTHH:mm");
+                ViewData["TotalPrice"] = result.TotalPrice.ToString("C");
+
+                ViewBag.BookingID = BookingID;
+
+                ViewBag.confirmationNo = confirmationNo;
+
+                // تأكد من عدم تغيير ConfirmationNo
+                result.ConfirmationNo = confirmationNo;
 
                 return View(result);
             }
         }
+        [HttpGet]
 
         [HttpGet]
-             
-        public IActionResult ConfirmRental(string carID,string Brand,string StartDate,string EndDate,
-     string firstName, string secondName, string thirdName, string LastName,
-     string email, string phoneNumber, string flightName, string flightNumber,
-     string address, string city, string postCode, string cardholdersName,
-     string cardholdersNumber, string expiryDate, string cvc, int? BookingID = null)
+        public IActionResult ConfirmRental(string carID, string Brand, string StartDate, string EndDate,
+    string firstName, string secondName, string thirdName, string LastName, decimal TotalPrice,
+    string email, string phoneNumber, string flightName, string flightNumber,
+    string address, string city, string postCode, string cardholdersName,
+    string cardholdersNumber, string expiryDate, string cvc,string pickupLocation,string dropoffLocation, int? BookingID = null)
+
         {
             var car = _context.Cars.FirstOrDefault(c => c.CarID == carID);
-            string model = car.Model.ToString();
-                DateTime startDate = Convert.ToDateTime(StartDate);
-            DateTime endDate = Convert.ToDateTime(EndDate);
+
             if (car == null)
             {
                 TempData["ErrorMessage"] = "Car not found.";
                 return RedirectToAction("Index", "Home");
             }
+
+            // الحصول على التواريخ الحالية من الحجز إذا كان موجودًا
+            Booking existingBooking = null;
+            if (BookingID != null)
+            {
+                existingBooking = _context.Bookings.FirstOrDefault(b => b.BookingID == BookingID);
+            }
+
+            DateTime startDate = existingBooking?.StartDate ?? Convert.ToDateTime(StartDate);
+            DateTime endDate = existingBooking?.EndDate ?? Convert.ToDateTime(EndDate);
+            int daysDifference = (endDate - startDate).Days;
+            ViewBag.totalPrice = car.DailyRate * daysDifference;
             ViewBag.Brand = car.Brand;
             ViewBag.model = car.Model;
-            var hourlyRate = car.DailyRate;
-            var hoursDiff = (endDate - startDate).TotalHours;
-            var totalPrice = hourlyRate * (decimal)hoursDiff;
+            //var hourlyRate = car.DailyRate;
+            //var hoursDiff = (endDate - startDate).TotalDays;
+            //var totalPrice = hourlyRate * (decimal)hoursDiff;
 
             var booking = new Booking
             {
                 BookingID = BookingID ?? 0,
                 CarID = carID,
-                Brand=Brand,
+                Brand = Brand,
                 Car = car,
                 StartDate = startDate,
                 EndDate = endDate,
-                TotalPrice = totalPrice,
+                TotalPrice = TotalPrice,
                 FirstName = firstName,
                 SecondName = secondName,
                 ThirdName = thirdName,
@@ -163,14 +191,21 @@ namespace CarRental.Controllers
                 CardholdersNumber = cardholdersNumber,
                 ExpiryDate = expiryDate,
                 CVC = cvc,
-                Model= model,
+                Model = car.Model,
                 Status = BookingStatus.Pending.ToString()
+
+
+
             };
+
+            TempData["PickupLocation"] = pickupLocation;
+            TempData["DropoffLocation"] = dropoffLocation;
 
             return View("ConfirmRental", booking);
         }
 
         [HttpPost]
+        
         public IActionResult ConfirmBooking(Booking booking)
         {
             bool isSave = false;
@@ -183,17 +218,22 @@ namespace CarRental.Controllers
                     booking.Status = BookingStatus.Pending.ToString();
                 }
 
-                if (booking.BookingID != 0)
+                if (HttpContext.Session.GetString("ConfirmationNo")!=null)
                 {
-                    TempData["booking"] = _context.Bookings.AsNoTracking().FirstOrDefault(b => b.BookingID == booking.BookingID);
+                    TempData["booking"] = _context.Bookings.AsNoTracking().FirstOrDefault(b => b.ConfirmationNo== HttpContext.Session.GetString("ConfirmationNo"));
+                    booking.ConfirmationNo = HttpContext.Session.GetString("ConfirmationNo");
+                    
                     _context.Bookings.Update(booking);
                     _context.SaveChanges();
+                    HttpContext.Session.Remove("ConfirmationNo");
+
                 }
                 else
                 {
                     isSave = true;
                     confirmationNo = Generate(10);
                     TempData["ConfirmationNo"] = confirmationNo;
+                    booking.ConfirmationNo = confirmationNo;
                     _context.Bookings.Add(booking);
                     _context.SaveChanges();
                 }
@@ -230,6 +270,8 @@ namespace CarRental.Controllers
                     .Replace("{{PickupLocation}}", pickupLocation)
                     .Replace("{{DropoffLocation}}", dropoffLocation)
                     .Replace("{{Status}}", booking.Status)
+                    .Replace("{{Model}}", booking.Model)
+
                     .Replace("{{ConfirmationNo}}", confirmationNo);
 
                 if (!isSave)
@@ -258,13 +300,21 @@ namespace CarRental.Controllers
 
         public IActionResult BookingSuccess(string CarID, long BookingID,string ConfirmationNo)
         {
-            ViewBag.ConfirmationNo = ConfirmationNo;
+            if (HttpContext.Session.GetString("ConfirmationNo") != null)
+            {
+                ViewBag.ConfirmationNo = HttpContext.Session.GetString("ConfirmationNo");            }
+            else
+            {
+                ViewBag.ConfirmationNo = ConfirmationNo;
+
+            }
 
             ViewBag.CarID = CarID;
             ViewBag.BookingID = BookingID;
             return View();
         }
 
+        [HttpPost]
         public IActionResult CancelBooking(long BookingID)
         {
             bool isCancelled = false;
